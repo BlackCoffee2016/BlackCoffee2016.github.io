@@ -102,13 +102,6 @@
 </header>
 	<div class="article-content">
 		
-		<div id="toc" class="toc-article">
-			<strong class="toc-title">文章目录</strong>
-		
-			<ol class="toc"><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">1.</span> <span class="toc-text">1,静态HTTP服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">2.</span> <span class="toc-text">2,反向代理服务器</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">3.</span> <span class="toc-text">3,负载均衡</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">4.</span> <span class="toc-text">4,虚拟主机</span></a></li><li class="toc-item toc-level-1"><a class="toc-link" href="#undefined"><span class="toc-number">5.</span> <span class="toc-text">5、FastCGI</span></a></li></ol>
-		
-		</div>
-		
 		<p>本文主要介绍一些Nginx的最基本功能以及简单配置，但不包括Nginx的安装部署以及实现原理。废话不多，直接开始。</p>
 <p></p><h1>1,静态HTTP服务器</h1><br>首先，Nginx是一个HTTP服务器，可以将服务器上的静态文件（如HTML、图片）通过HTTP协议展现给客户端。<br>配置：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">server &#123;</span><br><span class="line">	listen 80; <span class="comment"># 端口号</span></span><br><span class="line">	location / &#123;</span><br><span class="line">		root /usr/share/nginx/html; <span class="comment"># 静态文件路径</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p>
 <p></p><h1>2,反向代理服务器</h1><br>什么是反向代理？<p></p>
