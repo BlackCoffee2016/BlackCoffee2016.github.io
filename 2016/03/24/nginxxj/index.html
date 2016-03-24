@@ -11,28 +11,22 @@
     
 
     
-    <meta name="description" content="定义
-nginx是一个web服务器软件，有以下优点：高并发，静态资源5w/s,可以实现负载均衡,可以实现反向代理,内存和cup占用少,对后台服务有检查功能,代码简洁容易上手
-原理
+    <meta name="description" content="nginx是一个web服务器软件，有以下优点：高并发，静态资源5w/s,可以实现负载均衡,可以实现反向代理,内存和cup占用少,对后台服务有检查功能,代码简洁容易上手
 nginx是内核和模块组成，通过查找配置文件将客户请求映射到一个location block(location是Nginx配置中的一个命令，用于URL匹配)
-而在这个location中配置的每一个指令将会启动不同的模块来">
+而在这个location中配置的每一个指令将会启动不同的模块来完成相应的任">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Nginx详解">
 <meta property="og:url" content="http://yoursite.com/2016/03/24/nginxxj/index.html">
 <meta property="og:site_name" content="杨灿's Blog">
-<meta property="og:description" content="定义
-nginx是一个web服务器软件，有以下优点：高并发，静态资源5w/s,可以实现负载均衡,可以实现反向代理,内存和cup占用少,对后台服务有检查功能,代码简洁容易上手
-原理
+<meta property="og:description" content="nginx是一个web服务器软件，有以下优点：高并发，静态资源5w/s,可以实现负载均衡,可以实现反向代理,内存和cup占用少,对后台服务有检查功能,代码简洁容易上手
 nginx是内核和模块组成，通过查找配置文件将客户请求映射到一个location block(location是Nginx配置中的一个命令，用于URL匹配)
-而在这个location中配置的每一个指令将会启动不同的模块来">
-<meta property="og:updated_time" content="2016-03-24T08:03:07.585Z">
+而在这个location中配置的每一个指令将会启动不同的模块来完成相应的任">
+<meta property="og:updated_time" content="2016-03-24T08:04:54.448Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Nginx详解">
-<meta name="twitter:description" content="定义
-nginx是一个web服务器软件，有以下优点：高并发，静态资源5w/s,可以实现负载均衡,可以实现反向代理,内存和cup占用少,对后台服务有检查功能,代码简洁容易上手
-原理
+<meta name="twitter:description" content="nginx是一个web服务器软件，有以下优点：高并发，静态资源5w/s,可以实现负载均衡,可以实现反向代理,内存和cup占用少,对后台服务有检查功能,代码简洁容易上手
 nginx是内核和模块组成，通过查找配置文件将客户请求映射到一个location block(location是Nginx配置中的一个命令，用于URL匹配)
-而在这个location中配置的每一个指令将会启动不同的模块来">
+而在这个location中配置的每一个指令将会启动不同的模块来完成相应的任">
 
     
     <link rel="alternative" href="/atom.xml" title="杨灿&#39;s Blog" type="application/atom+xml">
@@ -107,9 +101,7 @@ nginx是内核和模块组成，通过查找配置文件将客户请求映射到
 </header>
 	<div class="article-content">
 		
-		<p></p><h1>定义<h1><p></p>
-<p>nginx是一个web服务器软件，有以下优点：高并发，静态资源5w/s,可以实现负载均衡,可以实现反向代理,内存和cup占用少,对后台服务有检查功能,代码简洁容易上手</p>
-<p></p><h1>原理<h1><p></p>
+		<p>nginx是一个web服务器软件，有以下优点：高并发，静态资源5w/s,可以实现负载均衡,可以实现反向代理,内存和cup占用少,对后台服务有检查功能,代码简洁容易上手</p>
 <p>nginx是内核和模块组成，通过查找配置文件将客户请求映射到一个location block(location是Nginx配置中的一个命令，用于URL匹配)</p>
 <p>而在这个location中配置的每一个指令将会启动不同的模块来完成相应的任务</p>
 <p></p><h1>安装<h1><p></p>
@@ -131,7 +123,7 @@ nginx是内核和模块组成，通过查找配置文件将客户请求映射到
 <p>在/usr/local/nginx/conf里面新建一个配置文件用户虚拟主机,文件名为xnzj.conf,内容如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">user nobody;</span><br><span class="line">worker_processes 4;</span><br><span class="line">events&#123;</span><br><span class="line">   worker_connection 1024;</span><br><span class="line">&#125;</span><br><span class="line">http&#123;</span><br><span class="line">    server&#123;</span><br><span class="line">	    listen 192.168.1.7:80;</span><br><span class="line">		server_name 192.168.1.7;</span><br><span class="line">		access_<span class="built_in">log</span> logs/server1.access_<span class="built_in">log</span> combined;</span><br><span class="line">		location /&#123;</span><br><span class="line">		    index index.html index.htm;</span><br><span class="line">			root html/server1;   //网页内容存放地，必须要在/usr/<span class="built_in">local</span>/nginx/html下先建立server1目录</span><br><span class="line">		&#125;</span><br><span class="line">	&#125;</span><br><span class="line">	server&#123;</span><br><span class="line">	     listen 192.168.1.17:80;</span><br><span class="line">		 server_name 192.168.1.17;</span><br><span class="line">		 access_<span class="built_in">log</span> logs/server2.access_<span class="built_in">log</span> combined;</span><br><span class="line">		 location /&#123;</span><br><span class="line">		     index index.html index.htm;</span><br><span class="line">			 root html/server1;//网页内容存放地，必须要在/usr/<span class="built_in">local</span>/nginx/html下先建立server1目录</span><br><span class="line">		 &#125;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
 <p>启动nginx是加载配置文件，命令如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">/usr/<span class="built_in">local</span>/nginx/sbin/nginx -c /usr/<span class="built_in">local</span>/nginx/conf/xnzj.conf</span><br></pre></td></tr></table></figure></p>
 <p></p><h1>8,虚拟主机,基于域名配置</h1><br>基于域名配置，www.abc.com和www.bbb.com对应的IP地址是一样的，两个域名是nginx服务器IP对应的域名<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br></pre></td><td class="code"><pre><span class="line">server&#123;</span><br><span class="line">  listen 80;</span><br><span class="line">  server_name www.abc.com //nginx服务器IP对应的域名</span><br><span class="line">  location / &#123;</span><br><span class="line">     root html/abc    //网页内容存放地，必须要在/usr/<span class="built_in">local</span>/nginx/html下先建立abc目录</span><br><span class="line">	 index index.html index.htm</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br><span class="line">server&#123;</span><br><span class="line">    listen 80;</span><br><span class="line">	server_name www.bbb.com  //nginx服务器IP对应的域名</span><br><span class="line">	location / &#123;</span><br><span class="line">	   root html/bbb   //网页内容存放地，必须要在/usr/<span class="built_in">local</span>/nginx/html下先建立bbb目录</span><br><span class="line">	   index index.html index.htm</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p>
-</h1></h1></h1></h1></h1></h1></h1></h1>  
+</h1></h1></h1></h1>  
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
