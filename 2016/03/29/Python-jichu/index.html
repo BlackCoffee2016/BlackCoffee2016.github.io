@@ -21,7 +21,7 @@ Python中文编码12#!/usr/bin/pythonprint &quot;你好，世界&quot;;
 <meta property="og:description" content="Python的环境搭建在这里就不做介绍了。
 Python中文编码12#!/usr/bin/pythonprint &quot;你好，世界&quot;;
 以上程序执行的结果为:12File &quot;test.py&quot;, line 2SyntaxError: Non-ASCII character &apos;\xe4&apos; in file test.py on line 2, but no encoding declared; see ht">
-<meta property="og:updated_time" content="2016-03-29T05:33:56.112Z">
+<meta property="og:updated_time" content="2016-03-29T05:40:44.268Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Python基础教程(一)">
 <meta name="twitter:description" content="Python的环境搭建在这里就不做介绍了。
@@ -111,7 +111,7 @@ Python中文编码12#!/usr/bin/pythonprint &quot;你好，世界&quot;;
 <p></p><h3>交互式编程</h3><br>交互式编程不需要创建脚本文件，是通过 Python 解释器的交互模式进来编写代码。<br>linux上你只需要在命令行中输入 Python 命令即可启动交互式编程,提示窗口如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python</span><br><span class="line">Python 2.7.6 (default, Sep  9 2014, 15:04:36) </span><br><span class="line">[GCC 4.2.1 Compatible Apple LLVM 6.0 (clang-600.0.39)] on darwin</span><br><span class="line">Type <span class="string">"help"</span>, <span class="string">"copyright"</span>, <span class="string">"credits"</span> or <span class="string">"license"</span> <span class="keyword">for</span> more information.</span><br><span class="line">&gt;&gt;&gt;</span><br></pre></td></tr></table></figure><p></p>
 <p></p><h3>脚本式编程</h3><br>通过脚本参数调用解释器开始执行脚本，直到脚本执行完毕。当脚本执行完成后，解释器不再有效。<br>让我们写一个简单的Python脚本程序。所有Python文件将以.py为扩展名。将以下的源代码拷贝至test.py文件中。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">print</span> <span class="string">"Hello, Python!"</span>;</span><br></pre></td></tr></table></figure><p></p>
 <p>这里，假设你已经设置了Python解释器PATH变量。使用以下命令运行程序：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ python test.py</span><br></pre></td></tr></table></figure></p>
-<p></p><h3>Python标识符</h3><br>在python里，标识符有字母、数字、下划线组成。<br>在python中，所有标识符可以包括英文、数字以及下划线（_），但不能以数字开头。<br>python中的标识符是区分大小写的。<br>以下划线开头的标识符是有特殊意义的。以单下划线开头（_foo）的代表不能直接访问的类属性，需通过类提供的接口进行访问，不能用”from xxx import *”而导入；<br>以双下划线开头的（<strong>foo）代表类的私有成员；以双下划线开头和结尾的（</strong>foo<strong>）代表python里特殊方法专用的标识，如</strong>init__（）代表类的构造函数<p></p>
+<p></p><h3>Python标识符</h3><br>在python里，标识符有字母、数字、下划线组成。<br>在python中，所有标识符可以包括英文、数字以及下划线（_），但不能以数字开头。<br>python中的标识符是区分大小写的。<br>以下划线开头的标识符是有特殊意义的。以单下划线开头（_foo）的代表不能直接访问的类属性，需通过类提供的接口进行访问，不能用”from xxx import *”而导入；<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">__foo  <span class="comment">#以双下划线开头的代表类的私有成员</span></span><br><span class="line">__foo__ <span class="comment">#以双下划线开头和结尾的代表python里特殊方法专用的标识，如__init__（）代表类的构造函数。</span></span><br></pre></td></tr></table></figure><p></p>
 <p></p><h3>行和缩进</h3><br>学习Python与其他语言最大的区别就是，Python的代码块不使用大括号（{}）来控制类，函数以及其他逻辑判断。python最具特色的就是用缩进来写模块。<br>缩进的空白数量是可变的，但是所有代码块语句必须包含相同的缩进空白数量，这个必须严格执行。如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">if</span> True:</span><br><span class="line">    <span class="built_in">print</span> <span class="string">"True"</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">  <span class="built_in">print</span> <span class="string">"False"</span></span><br></pre></td></tr></table></figure><p></p>
 <p>以下代码将会执行错误：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"><span class="comment"># 文件名：test.py</span></span><br><span class="line"></span><br><span class="line"> <span class="keyword">if</span> True:</span><br><span class="line">    <span class="built_in">print</span> <span class="string">"Answer"</span></span><br><span class="line">    <span class="built_in">print</span> <span class="string">"True"</span></span><br><span class="line"><span class="keyword">else</span>:</span><br><span class="line">    <span class="built_in">print</span> <span class="string">"Answer"</span></span><br><span class="line">    <span class="comment"># 没有严格缩进，在执行时保持</span></span><br><span class="line">  <span class="built_in">print</span> <span class="string">"False"</span></span><br></pre></td></tr></table></figure></p>
 <p>错误提示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">$ python test.py  </span><br><span class="line">  File <span class="string">"test.py"</span>, line 5</span><br><span class="line">    <span class="keyword">if</span> True:</span><br><span class="line">    ^</span><br><span class="line">IndentationError: unexpected indent</span><br></pre></td></tr></table></figure></p>
@@ -212,15 +212,15 @@ Python中文编码12#!/usr/bin/pythonprint &quot;你好，世界&quot;;
 			
 		
 			
+				<li><a href="/tags/java/" title="java">java<sup>1</sup></a></li>
+			
+		
+			
 				<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
 			
 		
 			
 				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>1</sup></a></li>
-			
-		
-			
-				<li><a href="/tags/java/" title="java">java<sup>1</sup></a></li>
 			
 		
 			
