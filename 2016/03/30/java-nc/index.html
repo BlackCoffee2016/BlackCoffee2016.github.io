@@ -4,26 +4,26 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | 杨灿&#39;s Blog</title>
+    <title>Java内存泄漏发生的情况 | 杨灿&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="杨灿">
     
 
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+    <meta name="description" content="虽然Java自带垃圾回收机制（GC），程序员不需要手动进行内存管理，但是仍然会出现内存泄漏的情况。尽管如此，Java的自动内存管理，比起C/C++，内存泄漏的情况大大减少了。下面总结下什么情况下会发生Java内存泄漏。
+静态集合类在使用Set、Vector、HashMap等集合类的时候需要特别注意，有可能会发生内存泄漏。当这些集合被定义成静态的时候，由于它们的生命周期跟应用程序一样长，这时候，就有">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2016/03/18/hello-world/index.html">
+<meta property="og:title" content="Java内存泄漏发生的情况">
+<meta property="og:url" content="http://yoursite.com/2016/03/30/java-nc/index.html">
 <meta property="og:site_name" content="杨灿's Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2016-03-18T09:39:47.696Z">
+<meta property="og:description" content="虽然Java自带垃圾回收机制（GC），程序员不需要手动进行内存管理，但是仍然会出现内存泄漏的情况。尽管如此，Java的自动内存管理，比起C/C++，内存泄漏的情况大大减少了。下面总结下什么情况下会发生Java内存泄漏。
+静态集合类在使用Set、Vector、HashMap等集合类的时候需要特别注意，有可能会发生内存泄漏。当这些集合被定义成静态的时候，由于它们的生命周期跟应用程序一样长，这时候，就有">
+<meta property="og:updated_time" content="2016-03-30T09:43:09.356Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="Java内存泄漏发生的情况">
+<meta name="twitter:description" content="虽然Java自带垃圾回收机制（GC），程序员不需要手动进行内存管理，但是仍然会出现内存泄漏的情况。尽管如此，Java的自动内存管理，比起C/C++，内存泄漏的情况大大减少了。下面总结下什么情况下会发生Java内存泄漏。
+静态集合类在使用Set、Vector、HashMap等集合类的时候需要特别注意，有可能会发生内存泄漏。当这些集合被定义成静态的时候，由于它们的生命周期跟应用程序一样长，这时候，就有">
 
     
     <link rel="alternative" href="/atom.xml" title="杨灿&#39;s Blog" type="application/atom+xml">
@@ -85,33 +85,38 @@ Quick">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/03/18/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2016/03/30/java-nc/" title="Java内存泄漏发生的情况" itemprop="url">Java内存泄漏发生的情况</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="杨灿" target="_blank" itemprop="author">杨灿</a>
 		
   <p class="article-time">
-    <time datetime="2016-03-18T09:39:47.696Z" itemprop="datePublished"> 发表于 2016-03-18</time>
+    <time datetime="2016-03-30T09:38:23.000Z" itemprop="datePublished"> 发表于 2016-03-30</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
-		<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+		<p>虽然Java自带垃圾回收机制（GC），程序员不需要手动进行内存管理，但是仍然会出现内存泄漏的情况。尽管如此，Java的自动内存管理，<br>比起C/C++，内存泄漏的情况大大减少了。下面总结下什么情况下会发生Java内存泄漏。</p>
+<p></p><h1>静态集合类</h1><br>在使用Set、Vector、HashMap等集合类的时候需要特别注意，有可能会发生内存泄漏。当这些集合被定义成静态的时候，由于它们的生命周期跟应用程序一样长，<br>这时候，就有可能会发生内存泄漏，看下面代码：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line">class StaticTest&#123;</span><br><span class="line">    private static Vector v = new Vector(10);</span><br><span class="line"></span><br><span class="line">    public void <span class="function"><span class="title">init</span></span>()&#123;</span><br><span class="line">        <span class="keyword">for</span> (int i = 1; i &lt; 100; i++)&#123;</span><br><span class="line">            Object object = new Object();</span><br><span class="line">            v.add(object);</span><br><span class="line">            object = null;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p>
+<p>在上面的代码中，循环申请了Object对象，并添加到Vector中，然后将对象设置为null，可是这些对象因为被Vector引用着，因此并不能被GC回收，因此造成了内存泄漏。<br>因此，要释放这些对象，还需要被它们从Vector删除，最简单的方法就是将Vector设置为null。</p>
+<p></p><h1>集合里的对象属性值被改变</h1><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public static void main(String[] args)&#123;</span><br><span class="line">    Set&lt;Student&gt; <span class="built_in">set</span> = new HashSet&lt;Student&gt;();</span><br><span class="line">    Student s1 = new Student(<span class="string">"Jack"</span>);</span><br><span class="line">    Student s2 = new Student(<span class="string">"Mary"</span>);</span><br><span class="line">    Student s3 = new Student(<span class="string">"Eason"</span>);</span><br><span class="line"></span><br><span class="line">    set.add(s1);</span><br><span class="line">    set.add(s2);</span><br><span class="line">    set.add(s3);</span><br><span class="line"></span><br><span class="line">    System.out.println(set.size());//3</span><br><span class="line">    s2.setName(<span class="string">"Jackson"</span>); //修改属性，此时s2元素对应的hashcode值发生改变</span><br><span class="line">    set.remove(s2);        // remove不掉，造成内存泄漏</span><br><span class="line">    set.add(s2);           // 添加成功</span><br><span class="line"></span><br><span class="line">    System.out.println(set.size());//4</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p>
+<p>在这个例子中，由于对象s2的属性值被改变了，因此不能从set中删除，所以set中会一直保持着s2的引用，不能被回收，造成了内存泄漏。</p>
+<p></p><h1>监听器</h1><br>在Java中，我们经常会使用到监听器，如对某个控件添加单击监听器addOnClickListener()，但往往释放对象的时候会忘记删除监听器，<br>这就有可能造成内存泄漏。好的方法就是，在释放对象的时候，应该记住释放所有监听器，这就能避免了因为监听器而导致的内存泄漏。<p></p>
+<p></p><h1>各种连接</h1><br>Java中的连接包括数据库连接、网络连接和io连接，如果没有显式调用其close()方法，是不会自动关闭的，这些连接就不能被GC回收而导致内存泄漏。<br>一般情况下，在try代码块里创建连接，在finally里释放连接，就能够避免此类内存泄漏。<p></p>
+<p></p><h1>外部模块的引用</h1><br>调用外部模块的时候，也应该注意防止内存泄漏。如模块A调用了外部模块B的一个方法，如：<br>public void register(Object o)<br>这个方法有可能就使得A模块持有传入对象的引用，这时候需要查看B模块是否提供了去除引用的方法，如unregister()。<br>这种情况容易忽略，而且发生了内存泄漏的话，比较难察觉，应该在编写代码过程中就应该注意此类问题。<p></p>
+<p></p><h1>单例模式</h1><br>使用单例模式的时候也有可能导致内存泄漏。因为单例对象初始化后将在JVM的整个生命周期内存在，如果它持有一个外部对象（生命周期比较短）的引用，<br>那么这个外部对象就不能被回收，而导致内存泄漏。如果这个外部对象还持有其它对象的引用，那么内存泄漏会更严重，因此需要特别注意此类情况。<br>这种情况就需要考虑下单例模式的设计会不会有问题，应该怎样保证不会产生内存泄漏问题。<p></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
 
 </div>
 
@@ -119,7 +124,7 @@ Quick">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2016/03/18/hello-world/" data-title="Hello World | 杨灿&#39;s Blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://yoursite.com/2016/03/30/java-nc/" data-title="Java内存泄漏发生的情况 | 杨灿&#39;s Blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -132,14 +137,14 @@ Quick">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/03/19/java-websocket-tail/" title="Java WebSocket + tail命令实现Web实时日志">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Java WebSocket + tail命令实现Web实时日志</span>
+
+<div class="next">
+<a href="/2016/03/30/Python-jichu-four/"  title="Python基础教程(四)">
+ <strong>下一篇：</strong><br/> 
+ <span>Python基础教程(四)
+</span>
 </a>
 </div>
-
 
 </nav>
 
