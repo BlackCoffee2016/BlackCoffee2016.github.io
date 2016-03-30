@@ -1,0 +1,501 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>Python基础教程(四) | 杨灿&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="杨灿">
+    
+
+    
+    <meta name="description" content="Python 数字Python 数字数据类型用于存储数值。数据类型是不允许改变的,这就意味着如果改变数字数据类型得值，将重新分配内存空间。以下实例在变量赋值时数字对象将被创建：12var1 = 1var2 = 10
+您也可以使用del语句删除一些数字对象引用。12del vardel var_a, var_b
+Python 支持四种不同的数值类型：整型(Int) - 通常被称为是整型或整数，是正或">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Python基础教程(四)">
+<meta property="og:url" content="http://yoursite.com/2016/03/30/Python-jichu-four/index.html">
+<meta property="og:site_name" content="杨灿's Blog">
+<meta property="og:description" content="Python 数字Python 数字数据类型用于存储数值。数据类型是不允许改变的,这就意味着如果改变数字数据类型得值，将重新分配内存空间。以下实例在变量赋值时数字对象将被创建：12var1 = 1var2 = 10
+您也可以使用del语句删除一些数字对象引用。12del vardel var_a, var_b
+Python 支持四种不同的数值类型：整型(Int) - 通常被称为是整型或整数，是正或">
+<meta property="og:updated_time" content="2016-03-30T08:21:08.128Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="Python基础教程(四)">
+<meta name="twitter:description" content="Python 数字Python 数字数据类型用于存储数值。数据类型是不允许改变的,这就意味着如果改变数字数据类型得值，将重新分配内存空间。以下实例在变量赋值时数字对象将被创建：12var1 = 1var2 = 10
+您也可以使用del语句删除一些数字对象引用。12del vardel var_a, var_b
+Python 支持四种不同的数值类型：整型(Int) - 通常被称为是整型或整数，是正或">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨灿&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="杨灿&#39;s Blog" title="杨灿&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="杨灿&#39;s Blog">杨灿&#39;s Blog</a></h1>
+				<h2 class="blog-motto">一直找不到对象(spring)</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/GitHub">GitHub</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/03/30/Python-jichu-four/" title="Python基础教程(四)" itemprop="url">Python基础教程(四)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="杨灿" target="_blank" itemprop="author">杨灿</a>
+		
+  <p class="article-time">
+    <time datetime="2016-03-30T07:30:35.000Z" itemprop="datePublished"> 发表于 2016-03-30</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<p></p><h1>Python 数字</h1><br>Python 数字数据类型用于存储数值。<br>数据类型是不允许改变的,这就意味着如果改变数字数据类型得值，将重新分配内存空间。<br>以下实例在变量赋值时数字对象将被创建：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var1 = 1</span><br><span class="line">var2 = 10</span><br></pre></td></tr></table></figure><p></p>
+<p>您也可以使用del语句删除一些数字对象引用。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">del var</span><br><span class="line">del var_a, var_b</span><br></pre></td></tr></table></figure></p>
+<p>Python 支持四种不同的数值类型：<br>整型(Int) - 通常被称为是整型或整数，是正或负整数，不带小数点。<br>长整型(long integers) - 无限大小的整数，整数最后是一个大写或小写的L。<br>浮点型(floating point real values) - 浮点型由整数部分与小数部分组成，浮点型也可以使用科学计数法表示（2.5e2 = 2.5 x 102 = 250）<br>复数( (complex numbers)) - 复数的虚部以字母J 或 j结尾 。如：2+3i</p>
+<p></p><h3>Python数字类型转换</h3><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">int(x [,base ])         将x转换为一个整数  </span><br><span class="line">long(x [,base ])        将x转换为一个长整数  </span><br><span class="line"><span class="built_in">float</span>(x )               将x转换到一个浮点数  </span><br><span class="line">complex(real [,imag ])  创建一个复数  </span><br><span class="line">str(x )                 将对象 x 转换为字符串  </span><br><span class="line">repr(x )                将对象 x 转换为表达式字符串  </span><br><span class="line"><span class="built_in">eval</span>(str )              用来计算在字符串中的有效Python表达式,并返回一个对象  </span><br><span class="line">tuple(s )               将序列 s 转换为一个元组  </span><br><span class="line">list(s )                将序列 s 转换为一个列表  </span><br><span class="line">chr(x )                 将一个整数转换为一个字符  </span><br><span class="line">unichr(x )              将一个整数转换为Unicode字符  </span><br><span class="line">ord(x )                 将一个字符转换为它的整数值  </span><br><span class="line">hex(x )                 将一个整数转换为一个十六进制字符串  </span><br><span class="line">oct(x )                 将一个整数转换为一个八进制字符串</span><br></pre></td></tr></table></figure><p></p>
+<p></p><h1>Python 字符串</h1><br>字符串是 Python 中最常用的数据类型。我们可以使用引号来创建字符串。<br>创建字符串很简单，只要为变量分配一个值即可。例如：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var1 = <span class="string">'Hello World!'</span></span><br><span class="line">var2 = <span class="string">"Python Programming"</span></span><br></pre></td></tr></table></figure><p></p>
+<p></p><h3>Python访问字符串中的值</h3><br>Python不支持单字符类型，单字符也在Python也是作为一个字符串使用。<br>Python访问子字符串，可以使用方括号来截取字符串，如下实例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line">var1 = <span class="string">'Hello World!'</span></span><br><span class="line">var2 = <span class="string">"Python Programming"</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">"var1[0]: "</span>, var1[0]</span><br><span class="line"><span class="built_in">print</span> <span class="string">"var2[1:5]: "</span>, var2[1:5]</span><br></pre></td></tr></table></figure><p></p>
+<p>结果为:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var1[0]:  H</span><br><span class="line">var2[1:5]:  ytho</span><br></pre></td></tr></table></figure></p>
+<p></p><h3>Python字符串更新</h3><br>你可以对已存在的字符串进行修改，并赋值给另一个变量，如下实例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line">var1 = <span class="string">'Hello World!'</span></span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">"Updated String :- "</span>, var1[:6] + <span class="string">'Python'</span></span><br></pre></td></tr></table></figure><p></p>
+<p>以上实例执行结果<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">Updated String :-  Hello Python</span><br></pre></td></tr></table></figure></p>
+<p></p><h3>字符串运算符</h3><br>下表实例变量a值为字符串”Hello”，b变量值为”Python”：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">+  <span class="comment">#字符串连接     a + b 输出结果： HelloPython</span></span><br><span class="line">*  <span class="comment">#重复输出字符串 a*2 输出结果：HelloHello</span></span><br><span class="line">[] <span class="comment">#通过索引获取字符串中字符   a[1] 输出结果 e</span></span><br><span class="line">[ : ]  <span class="comment">#截取字符串中的一部分   a[1:4] 输出结果 ell</span></span><br><span class="line"><span class="keyword">in</span>     <span class="comment">#成员运算符 - 如果字符串中包含给定的字符返回 True     H in a 输出结果 1</span></span><br><span class="line">not <span class="keyword">in</span> <span class="comment">#成员运算符 - 如果字符串中不包含给定的字符返回 True   M not in a 输出结果 1</span></span><br></pre></td></tr></table></figure><p></p>
+<p></p><h1>Python 列表(Lists)</h1><br>序列是Python中最基本的数据结构。序列中的每个元素都分配一个数字 - 它的位置，或索引，第一个索引是0，第二个索引是1，依此类推。<br>Python有6个序列的内置类型，但最常见的是列表和元组。<br>序列都可以进行的操作包括索引，切片，加，乘，检查成员。<br>此外，Python已经内置确定序列的长度以及确定最大和最小的元素的方法。<br>列表是最常用的Python数据类型，它可以作为一个方括号内的逗号分隔值出现。<br><code>列表的数据项不需要具有相同的类型</code><br>创建一个列表，只要把逗号分隔的不同的数据项使用方括号括起来即可。如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">list1 = [<span class="string">'physics'</span>, <span class="string">'chemistry'</span>, 1997, 2000];</span><br><span class="line">list2 = [1, 2, 3, 4, 5 ];</span><br><span class="line">list3 = [<span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>, <span class="string">"d"</span>];</span><br></pre></td></tr></table></figure><p></p>
+<p>与字符串的索引一样，列表索引从0开始。列表可以进行截取、组合等。</p>
+<p></p><h1>访问列表中的值</h1><br>使用下标索引来访问列表中的值，同样你也可以使用方括号的形式截取字符，如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line">list1 = [<span class="string">'physics'</span>, <span class="string">'chemistry'</span>, 1997, 2000];</span><br><span class="line">list2 = [1, 2, 3, 4, 5, 6, 7 ];</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">"list1[0]: "</span>, list1[0]</span><br><span class="line"><span class="built_in">print</span> <span class="string">"list2[1:5]: "</span>, list2[1:5]</span><br></pre></td></tr></table></figure><p></p>
+<p>以上实例输出结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">list1[0]:  physics</span><br><span class="line">list2[1:5]:  [2, 3, 4, 5]</span><br></pre></td></tr></table></figure></p>
+<p></p><h3>更新列表</h3><br>你可以对列表的数据项进行修改或更新，你也可以使用append()方法来添加列表项，如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line">list = [<span class="string">'physics'</span>, <span class="string">'chemistry'</span>, 1997, 2000];</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">"Value available at index 2 : "</span></span><br><span class="line"><span class="built_in">print</span> list[2];</span><br><span class="line">list[2] = 2001;</span><br><span class="line"><span class="built_in">print</span> <span class="string">"New value available at index 2 : "</span></span><br><span class="line"><span class="built_in">print</span> list[2];</span><br></pre></td></tr></table></figure><p></p>
+<p>注意：我们会在接下来的章节讨论append()方法的使用<br>以上实例输出结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Value available at index 2 :</span><br><span class="line">1997</span><br><span class="line">New value available at index 2 :</span><br><span class="line">2001</span><br></pre></td></tr></table></figure></p>
+<p></p><h3>删除列表元素</h3><br>可以使用 del 语句来删除列表的的元素，如下实例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line">list1 = [<span class="string">'physics'</span>, <span class="string">'chemistry'</span>, 1997, 2000];</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> list1;</span><br><span class="line">del list1[2];</span><br><span class="line"><span class="built_in">print</span> <span class="string">"After deleting value at index 2 : "</span></span><br><span class="line"><span class="built_in">print</span> list1;</span><br></pre></td></tr></table></figure><p></p>
+<p>结果为:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[<span class="string">'physics'</span>, <span class="string">'chemistry'</span>, 1997, 2000]</span><br><span class="line">After deleting value at index 2 :</span><br><span class="line">[<span class="string">'physics'</span>, <span class="string">'chemistry'</span>, 2000]</span><br></pre></td></tr></table></figure></p>
+<p>注意：我们会在接下来的章节讨论remove()方法的使用</p>
+<p></p><h1>Python 元组</h1><br>Python的元组与列表类似，不同之处在于元组的元素不能修改。<br>元组使用小括号，列表使用方括号。<br>元组创建很简单，只需要在括号中添加元素，并使用逗号隔开即可。<br>如下实例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">tup1 = (<span class="string">'physics'</span>, <span class="string">'chemistry'</span>, 1997, 2000);</span><br><span class="line">tup2 = (1, 2, 3, 4, 5 );</span><br><span class="line">tup3 = <span class="string">"a"</span>, <span class="string">"b"</span>, <span class="string">"c"</span>, <span class="string">"d"</span>;</span><br></pre></td></tr></table></figure><p></p>
+<p>创建空元组<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tup1 = ();</span><br></pre></td></tr></table></figure></p>
+<p>元组中只包含一个元素时，需要在元素后面添加逗号<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">tup1 = (50,);</span><br></pre></td></tr></table></figure></p>
+<p>元组与字符串类似，下标索引从0开始，可以进行截取，组合等。</p>
+<p></p><h3>访问元组</h3><br>元组可以使用下标索引来访问元组中的值，如下实例:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line">tup1 = (<span class="string">'physics'</span>, <span class="string">'chemistry'</span>, 1997, 2000);</span><br><span class="line">tup2 = (1, 2, 3, 4, 5, 6, 7 );</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> <span class="string">"tup1[0]: "</span>, tup1[0]</span><br><span class="line"><span class="built_in">print</span> <span class="string">"tup2[1:5]: "</span>, tup2[1:5]</span><br></pre></td></tr></table></figure><p></p>
+<p>以上实例输出结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">tup1[0]:  physics</span><br><span class="line">tup2[1:5]:  (2, 3, 4, 5)</span><br></pre></td></tr></table></figure></p>
+<p></p><h3>修改元组</h3><br>元组中的元素值是不允许修改的，但我们可以对元组进行连接组合，如下实例:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"></span><br><span class="line">tup1 = (12, 34.56);</span><br><span class="line">tup2 = (<span class="string">'abc'</span>, <span class="string">'xyz'</span>);</span><br><span class="line"></span><br><span class="line"><span class="comment"># 以下修改元组元素操作是非法的。</span></span><br><span class="line"><span class="comment"># tup1[0] = 100;</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 创建一个新的元组</span></span><br><span class="line">tup3 = tup1 + tup2;</span><br><span class="line"><span class="built_in">print</span> tup3;</span><br></pre></td></tr></table></figure><p></p>
+<p>以上实例输出结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">(12, 34.56, <span class="string">'abc'</span>, <span class="string">'xyz'</span>)</span><br></pre></td></tr></table></figure></p>
+<p></p><h3>删除元组</h3><br>元组中的元素值是不允许删除的，但我们可以使用del语句来删除整个元组，如下实例:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"></span><br><span class="line">tup = (<span class="string">'physics'</span>, <span class="string">'chemistry'</span>, 1997, 2000);</span><br><span class="line"></span><br><span class="line"><span class="built_in">print</span> tup;</span><br><span class="line">del tup;</span><br><span class="line"><span class="built_in">print</span> <span class="string">"After deleting tup : "</span></span><br><span class="line"><span class="built_in">print</span> tup;</span><br></pre></td></tr></table></figure><p></p>
+<p>以上实例元组被删除后，输出变量会有异常信息，输出如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">(<span class="string">'physics'</span>, <span class="string">'chemistry'</span>, 1997, 2000)</span><br><span class="line">After deleting tup :</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"test.py"</span>, line 9, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="built_in">print</span> tup;</span><br><span class="line">NameError: name <span class="string">'tup'</span> is not defined</span><br></pre></td></tr></table></figure></p>
+<p></p><h1>Python 字典(Dictionary)</h1><br>字典是另一种可变容器模型，且可存储任意类型对象。<br>字典的每个键值(key=&gt;value)对用冒号(:)分割，每个对之间用逗号(,)分割，整个字典包括在花括号({})中 ,格式如下所示：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">d = &#123;key1 : value1, key2 : value2 &#125;</span><br></pre></td></tr></table></figure><p></p>
+<p>键必须是唯一的，但值则不必。<br>值可以取任何数据类型，但键必须是不可变的，如字符串，数字或元组。<br>一个简单的字典实例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dict = &#123;<span class="string">'Alice'</span>: <span class="string">'2341'</span>, <span class="string">'Beth'</span>: <span class="string">'9102'</span>, <span class="string">'Cecil'</span>: <span class="string">'3258'</span>&#125;</span><br></pre></td></tr></table></figure></p>
+<p>也可如此创建字典：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dict1 = &#123; <span class="string">'abc'</span>: 456 &#125;;</span><br><span class="line">dict2 = &#123; <span class="string">'abc'</span>: 123, 98.6: 37 &#125;;</span><br></pre></td></tr></table></figure></p>
+<p></p><h3>访问字典里的值</h3><br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"> </span><br><span class="line">dict = &#123;<span class="string">'Name'</span>: <span class="string">'Zara'</span>, <span class="string">'Age'</span>: 7, <span class="string">'Class'</span>: <span class="string">'First'</span>&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span> <span class="string">"dict['Name']: "</span>, dict[<span class="string">'Name'</span>];</span><br><span class="line"><span class="built_in">print</span> <span class="string">"dict['Age']: "</span>, dict[<span class="string">'Age'</span>];</span><br></pre></td></tr></table></figure><p></p>
+<p>以上实例输出结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dict[<span class="string">'Name'</span>]:  Zara</span><br><span class="line">dict[<span class="string">'Age'</span>]:  7</span><br></pre></td></tr></table></figure></p>
+<p></p><h3>修改字典</h3><br>向字典添加新内容的方法是增加新的键/值对，修改或删除已有键/值对如下实例:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"> </span><br><span class="line">dict = &#123;<span class="string">'Name'</span>: <span class="string">'Zara'</span>, <span class="string">'Age'</span>: 7, <span class="string">'Class'</span>: <span class="string">'First'</span>&#125;;</span><br><span class="line"> </span><br><span class="line">dict[<span class="string">'Age'</span>] = 8; <span class="comment"># update existing entry</span></span><br><span class="line">dict[<span class="string">'School'</span>] = <span class="string">"DPS School"</span>; <span class="comment"># Add new entry</span></span><br><span class="line"> </span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span> <span class="string">"dict['Age']: "</span>, dict[<span class="string">'Age'</span>];</span><br><span class="line"><span class="built_in">print</span> <span class="string">"dict['School']: "</span>, dict[<span class="string">'School'</span>];</span><br></pre></td></tr></table></figure><p></p>
+<p>以上实例输出结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">dict[<span class="string">'Age'</span>]:  8</span><br><span class="line">dict[<span class="string">'School'</span>]:  DPS School</span><br></pre></td></tr></table></figure></p>
+<p></p><h3>删除字典元素</h3><br>能删单一的元素也能清空字典，清空只需一项操作。<br>显示删除一个字典用del命令，如下实例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"><span class="comment"># -*- coding: UTF-8 -*-</span></span><br><span class="line"></span><br><span class="line">dict = &#123;<span class="string">'Name'</span>: <span class="string">'Zara'</span>, <span class="string">'Age'</span>: 7, <span class="string">'Class'</span>: <span class="string">'First'</span>&#125;;</span><br><span class="line"> </span><br><span class="line">del dict[<span class="string">'Name'</span>]; <span class="comment"># 删除键是'Name'的条目</span></span><br><span class="line">dict.clear();     <span class="comment"># 清空词典所有条目</span></span><br><span class="line">del dict ;        <span class="comment"># 删除词典</span></span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span> <span class="string">"dict['Age']: "</span>, dict[<span class="string">'Age'</span>];</span><br><span class="line"><span class="built_in">print</span> <span class="string">"dict['School']: "</span>, dict[<span class="string">'School'</span>];</span><br></pre></td></tr></table></figure><p></p>
+<p>但这会引发一个异常，因为用del后字典不再存在：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">dict[<span class="string">'Age'</span>]:</span><br><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"test.py"</span>, line 8, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    <span class="built_in">print</span> <span class="string">"dict['Age']: "</span>, dict[<span class="string">'Age'</span>];</span><br><span class="line">TypeError: <span class="string">'type'</span> object is unsubscriptable</span><br></pre></td></tr></table></figure></p>
+<p>字典键的特性<br>字典值可以没有限制地取任何python对象，既可以是标准的对象，也可以是用户定义的，但键不行。<br>两个重要的点需要记住：<br>1）不允许同一个键出现两次。创建时如果同一个键被赋值两次，后一个值会被记住，如下实例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"> </span><br><span class="line">dict = &#123;<span class="string">'Name'</span>: <span class="string">'Zara'</span>, <span class="string">'Age'</span>: 7, <span class="string">'Name'</span>: <span class="string">'Manni'</span>&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span> <span class="string">"dict['Name']: "</span>, dict[<span class="string">'Name'</span>];</span><br></pre></td></tr></table></figure></p>
+<p>以上实例输出结果：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">dict[<span class="string">'Name'</span>]:  Manni</span><br></pre></td></tr></table></figure></p>
+<p>2）键必须不可变，所以可以用数字，字符串或元组充当，所以用列表就不行，如下实例：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#!/usr/bin/python</span></span><br><span class="line"> </span><br><span class="line">dict = &#123;[<span class="string">'Name'</span>]: <span class="string">'Zara'</span>, <span class="string">'Age'</span>: 7&#125;;</span><br><span class="line"> </span><br><span class="line"><span class="built_in">print</span> <span class="string">"dict['Name']: "</span>, dict[<span class="string">'Name'</span>];</span><br></pre></td></tr></table></figure></p>
+<p>结果为:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">Traceback (most recent call last):</span><br><span class="line">  File <span class="string">"test.py"</span>, line 3, <span class="keyword">in</span> &lt;module&gt;</span><br><span class="line">    dict = &#123;[<span class="string">'Name'</span>]: <span class="string">'Zara'</span>, <span class="string">'Age'</span>: 7&#125;;</span><br><span class="line">TypeError: list objects are unhashable</span><br></pre></td></tr></table></figure></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/Python/">Python</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/03/30/Python-jichu-four/" data-title="Python基础教程(四) | 杨灿&#39;s Blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/03/30/Python-jichu-three/"  title="Python基础教程(三)">
+ <strong>下一篇：</strong><br/> 
+ <span>Python基础教程(三)
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>4</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/webservice/" title="webservice">webservice<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://xxgblog.com/" target="_blank" title="吴操&#39;s Blog">吴操&#39;s Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Yang Can in China. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="杨灿">杨灿</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
