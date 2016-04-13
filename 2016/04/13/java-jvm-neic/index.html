@@ -4,26 +4,29 @@
 <head>
   <meta charset="UTF-8">
   
-    <title>Hello World | 杨灿&#39;s Blog</title>
+    <title>jvm内存模型与内存分配 | 杨灿&#39;s Blog</title>
     <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
     
     <meta name="author" content="杨灿">
     
 
     
-    <meta name="description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+    <meta name="description" content="jvm内存模型
+程序计数器特征：占用内存很小，线程私有，生命周期与线程相同。作用：当前线程所执行的字节码的行号指示器，正在执行的虚拟机字节码指令的地址。异常情况：此内存区域是唯一一个在Java 虚拟机规范中没有规定任何OutOfMemoryError 情况的区域。
+栈特征：线程私有，生命周期与线程相同，使用连续的内存空间。作用：Java方法执行的内存模型，用于存储本地变量，操作栈等。每一个方法被调">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Hello World">
-<meta property="og:url" content="http://yoursite.com/2016/03/18/hello-world/index.html">
+<meta property="og:title" content="jvm内存模型与内存分配">
+<meta property="og:url" content="http://yoursite.com/2016/04/13/java-jvm-neic/index.html">
 <meta property="og:site_name" content="杨灿's Blog">
-<meta property="og:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
-<meta property="og:updated_time" content="2016-03-18T09:39:47.696Z">
+<meta property="og:description" content="jvm内存模型
+程序计数器特征：占用内存很小，线程私有，生命周期与线程相同。作用：当前线程所执行的字节码的行号指示器，正在执行的虚拟机字节码指令的地址。异常情况：此内存区域是唯一一个在Java 虚拟机规范中没有规定任何OutOfMemoryError 情况的区域。
+栈特征：线程私有，生命周期与线程相同，使用连续的内存空间。作用：Java方法执行的内存模型，用于存储本地变量，操作栈等。每一个方法被调">
+<meta property="og:updated_time" content="2016-04-13T09:32:00.006Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="Hello World">
-<meta name="twitter:description" content="Welcome to Hexo! This is your very first post. Check documentation for more info. If you get any problems when using Hexo, you can find the answer in troubleshooting or you can ask me on GitHub.
-Quick">
+<meta name="twitter:title" content="jvm内存模型与内存分配">
+<meta name="twitter:description" content="jvm内存模型
+程序计数器特征：占用内存很小，线程私有，生命周期与线程相同。作用：当前线程所执行的字节码的行号指示器，正在执行的虚拟机字节码指令的地址。异常情况：此内存区域是唯一一个在Java 虚拟机规范中没有规定任何OutOfMemoryError 情况的区域。
+栈特征：线程私有，生命周期与线程相同，使用连续的内存空间。作用：Java方法执行的内存模型，用于存储本地变量，操作栈等。每一个方法被调">
 
     
     <link rel="alternative" href="/atom.xml" title="杨灿&#39;s Blog" type="application/atom+xml">
@@ -85,33 +88,43 @@ Quick">
 		<header class="article-info clearfix">
   <h1 itemprop="name">
     
-      <a href="/2016/03/18/hello-world/" title="Hello World" itemprop="url">Hello World</a>
+      <a href="/2016/04/13/java-jvm-neic/" title="jvm内存模型与内存分配" itemprop="url">jvm内存模型与内存分配</a>
   </h1>
   <p class="article-author">By
        
 		<a href="/about" title="杨灿" target="_blank" itemprop="author">杨灿</a>
 		
   <p class="article-time">
-    <time datetime="2016-03-18T09:39:47.696Z" itemprop="datePublished"> 发表于 2016-03-18</time>
+    <time datetime="2016-04-13T09:07:54.000Z" itemprop="datePublished"> 发表于 2016-04-13</time>
     
   </p>
 </header>
 	<div class="article-content">
 		
-		<p>Welcome to <a href="https://hexo.io/" target="_blank" rel="external">Hexo</a>! This is your very first post. Check <a href="https://hexo.io/docs/" target="_blank" rel="external">documentation</a> for more info. If you get any problems when using Hexo, you can find the answer in <a href="https://hexo.io/docs/troubleshooting.html" target="_blank" rel="external">troubleshooting</a> or you can ask me on <a href="https://github.com/hexojs/hexo/issues" target="_blank" rel="external">GitHub</a>.</p>
-<h2 id="Quick-Start"><a href="#Quick-Start" class="headerlink" title="Quick Start"></a>Quick Start</h2><h3 id="Create-a-new-post"><a href="#Create-a-new-post" class="headerlink" title="Create a new post"></a>Create a new post</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo new <span class="string">"My New Post"</span></span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/writing.html" target="_blank" rel="external">Writing</a></p>
-<h3 id="Run-server"><a href="#Run-server" class="headerlink" title="Run server"></a>Run server</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo server</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/server.html" target="_blank" rel="external">Server</a></p>
-<h3 id="Generate-static-files"><a href="#Generate-static-files" class="headerlink" title="Generate static files"></a>Generate static files</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo generate</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/generating.html" target="_blank" rel="external">Generating</a></p>
-<h3 id="Deploy-to-remote-sites"><a href="#Deploy-to-remote-sites" class="headerlink" title="Deploy to remote sites"></a>Deploy to remote sites</h3><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">$ hexo deploy</span><br></pre></td></tr></table></figure>
-<p>More info: <a href="https://hexo.io/docs/deployment.html" target="_blank" rel="external">Deployment</a></p>
+		<p></p><h1>jvm内存模型</h1><p></p>
+<p></p><h3>程序计数器</h3><br>特征：占用内存很小，线程私有，生命周期与线程相同。<br>作用：当前线程所执行的字节码的行号指示器，正在执行的虚拟机字节码指令的地址。<br>异常情况：此内存区域是唯一一个在Java 虚拟机规范中没有规定任何OutOfMemoryError 情况的区域。<p></p>
+<p></p><h3>栈</h3><br>特征：线程私有，生命周期与线程相同，使用连续的内存空间。<br>作用：Java方法执行的内存模型，用于存储本地变量，操作栈等。每一个方法被调用直至执行完成的过程，就对应着一个栈帧在虚拟机栈中从入栈到出栈的过程。<br>配置参数：-Xss<br>异常情况：StackOverflowError和OutOfMemoryError<p></p>
+<p></p><h3>堆</h3><br>特征：线程共享，生命周期与虚拟机相同，可以使用不连续内存空间<br>作用：保存对象、数组。随着JIT编译器栈上分配，标量替换等优化技术的发展，这个也不是绝对了。<br>配置参数:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">-Xms16m:堆内存初始值</span><br><span class="line">-Xmx256m:堆内存最大值</span><br><span class="line">-Xmn:堆内存新生代大小</span><br><span class="line">-XX:NewRatio=2: ratio=old/new</span><br><span class="line">-XX:SurvivorRatio=8:ratio=eden/survivor</span><br></pre></td></tr></table></figure><p></p>
+<p>异常情况：OutOfMemoryError</p>
+<p></p><h3>方法区</h3><br>特征：线程共享，生命周期与虚拟机相同，可以使用不连续内存空间<br>作用：存储已被虚拟机加载的类信息、常量、静态变量、JIT编译后的代码<br>配置参数：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">-XX:PermSize=12M</span><br><span class="line">-XX:MaxPermSize=64M</span><br></pre></td></tr></table></figure><p></p>
+<p>异常情况：OutOfMemoryError</p>
+<p></p><h3>运行时常量池</h3><br>特征：方法区一部分，具备动态性<br>作用：存放字面量和符号引用<br>异常情况：OutOfMemoryError<p></p>
+<p></p><h3>直接内存</h3><br>特征：非虚拟机规范定义，但使用频繁。<br>作用：主要在JAVA的NIO，比如文件流等<br>配置参数：默认=堆大小<br>异常情况：OutOfMemoryError<p></p>
+<p></p><h3>对象访问</h3><br>对象访问的两种方式：句柄和指针<br>句柄：类似销售模式里面的代理模式，先访问一个中间变量，再通过该中间变量访问对象<br>指针：类似销售模式里面的直销模式，直接通过指针去访问对象<p></p>
+<p></p><h1>内存分配</h1><br>对象优先在EDEN分配，大对象直接进入老年代，长期存活的对象将进入老年代，适龄对象也可能进入老年代。<p></p>
+<p></p><h3>新生代</h3><br>新生代是类的对象创建、成长和死亡的区域，一个类的对象在这里产生，使用，最后被gc，结束生命。新生代分为两个部分：Eden Space和两个Survivor区域。<br>当Eden Space空间用完时，JVM将此区域仍然存活的对象移动到Survivor 0 区域，然后对Eden Space进行垃圾回收，<br>当Survivor 0 满时，存活对象移动到Survivor 1，当Survivor 1 慢时，则把仍然存活的对象移动到Tenured Space 老年代中。<p></p>
+<p></p><h3>老年代</h3><br>存放从新生代中筛选后的java对象。<p></p>
+<p></p><h3>持久代</h3><br>持久代是一个常驻内存区域，用于存放JDK本身所携带的Class等元数据，被加载进来的数据时不会被gc的，随JVM的关闭而释放内存。<p></p>
   
 	</div>
 		<footer class="article-footer clearfix">
 <div class="article-catetags">
 
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
 
 </div>
 
@@ -119,7 +132,7 @@ Quick">
 
 	<div class="article-share" id="share">
 	
-	  <div data-url="http://yoursite.com/2016/03/18/hello-world/" data-title="Hello World | 杨灿&#39;s Blog" data-tsina="null" class="share clearfix">
+	  <div data-url="http://yoursite.com/2016/04/13/java-jvm-neic/" data-title="jvm内存模型与内存分配 | 杨灿&#39;s Blog" data-tsina="null" class="share clearfix">
 	  </div>
 	
 	</div>
@@ -132,14 +145,14 @@ Quick">
 	
 <nav class="article-nav clearfix">
  
- <div class="prev" >
- <a href="/2016/03/19/java-websocket-tail/" title="Java WebSocket + tail命令实现Web实时日志">
-  <strong>上一篇：</strong><br/>
-  <span>
-  Java WebSocket + tail命令实现Web实时日志</span>
+
+<div class="next">
+<a href="/2016/04/06/java-list/"  title="如何线程安全地遍历List：Vector、CopyOnWriteArrayList">
+ <strong>下一篇：</strong><br/> 
+ <span>如何线程安全地遍历List：Vector、CopyOnWriteArrayList
+</span>
 </a>
 </div>
-
 
 </nav>
 
