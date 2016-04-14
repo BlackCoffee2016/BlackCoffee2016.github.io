@@ -19,7 +19,7 @@
 <meta property="og:site_name" content="杨灿's Blog">
 <meta property="og:description" content="类加载器
 根类加载器(Bootstrap)它用来加载 Java 的核心库。使用c++编写，程序员无法在Java代码中获得该类 获取类的加载器，如果这个类是由Bootstrap来加载的，那个getClassLoader返回的就是null12Class clazz=Class.forName(&quot;java.lang.String&quot;);System.out.println(clazz.getClassLo">
-<meta property="og:updated_time" content="2016-04-14T10:16:18.976Z">
+<meta property="og:updated_time" content="2016-04-14T10:21:16.991Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="jvm类加载器">
 <meta name="twitter:description" content="类加载器
@@ -104,7 +104,7 @@
 <p></p><h3>系统类加载器(System)</h3><br>它根据 Java 应用的类路径（classpath）来加载 Java<p></p>
 <p></p><h3>用户自定义的类加载器</h3><br>java.lang.ClassLoader的子类,用户可以定制类的加载方式。<br><code>类加载器并不需要等到某一个类被“首次主动使用”时再加载它。</code><br>调用ClassLoader类的loadClass方法加载一个类，并不是对一个类的主动使用。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">	static&#123;</span><br><span class="line">		System.out.println(<span class="string">"abc"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">public class Main &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) throws Exception&#123;</span><br><span class="line">		ClassLoader loader=ClassLoader.getSystemClassLoader();</span><br><span class="line">		</span><br><span class="line">		loader.loadClass(<span class="string">"com.kongzhong.gw2.account.service.Test"</span>);//并不会打印出<span class="string">"abc"</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		Class.forName(<span class="string">"com.kongzhong.gw2.account.service.Test"</span>);//反射会导致主动使用，会打印出<span class="string">"abc"</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p>
 <p></p><h1>父类委托加载机制</h1><br>当Java程序请求加载器loader1加载某一个类的时候，loader1首先委托自己的父加载器去加载这个类，若父加载器能加载，则由父加载器完成加载任务。否则才由加载器loader1本身加载这个类。这样做是为了安全考虑，防止有人冒充Java核心类库。<br>例如：用户自定义了一个类，类的全名为java.lang.String<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package java.lang;</span><br><span class="line"></span><br><span class="line">public class String &#123;</span><br><span class="line"></span><br><span class="line">	public void <span class="function"><span class="title">sayHello</span></span>()&#123;</span><br><span class="line">		System.out.println(<span class="string">"aaa"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	String string=new String();</span><br><span class="line">	string.sayHello();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p>
-<p>结果：运行时的结果为：Exception in thread “main” java.lang.NoSuchMethodError: java.lang.String.sayHello()V<br>总结：<code>说明类加载是安装父类委托机制。运行的永远是java类库中String</code></p>
+<p>结果：运行时的结果为：Exception in thread “main” java.lang.NoSuchMethodError: java.lang.String.sayHello()V<br>总结：<code>说明类加载是父类委托机制。先让父加载器去加载。运行的永远是java类库中String</code></p>
 <p></p><h3>定义类加载器与初始化类加载器</h3><br>如果某一个类加载器能够加载一个类，那么该类加载器就被叫做定义类加载器，定义类加载器及其所有子加载器都被叫做：初始类加载器。<br>当生成一个自定义类加载器实例时，如果没有指定它的父加载器，那么系统类加载器就将成为该类加载器的父加载器。<p></p>
 <p></p><h3>命名空间</h3><br>每一个类加载器都有自己的命名空间，命名空间由该加载器及其所有父加载器的类组成。在同一个命名空间中，不会出现类的完整名字（包括类的包名）相同的两个类<br>在不同的命名空间中，有可能会出现类的完整名字(包括类的包名)相同的两个类。<p></p>
 <p></p><h3>运行时包</h3><br>由同一个类加载器加载的属于相同包的类组成了运行时包。决定两个类是不是属于同一个运行时包，不仅要看它们的包名是否相同，还要看定义类加载器是否相同。只有属于<br>同一个运行时包的类才能互相访问(即默认访问级别)类和类成员。这样的限制能避免用户自定义的类冒充核心类库的类。去访问核心类库的包可见成员。<br>假设用户自己定义了一个类java.lang.Spy,并由用户自定义的类加载器加载，由于java.lang.Spy和核心类库java.lang.*由不同的加载器加载，它们属于不同的运行时包。<br>所以java.lang.Spy不能访问核心类库java.lang包中的包可见成员。<p></p>
@@ -183,11 +183,11 @@
 			
 		
 			
-				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>1</sup></a></li>
+				<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>1</sup></a></li>
 			
 		
 			
