@@ -1,0 +1,468 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>jvm类加载器 | 杨灿&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="杨灿">
+    
+
+    
+    <meta name="description" content="类加载器
+根类加载器(Bootstrap)它用来加载 Java 的核心库。使用c++编写，程序员无法在Java代码中获得该类 获取类的加载器，如果这个类是由Bootstrap来加载的，那个getClassLoader返回的就是null12Class clazz=Class.forName(&quot;java.lang.String&quot;);System.out.println(clazz.getClassLo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="jvm类加载器">
+<meta property="og:url" content="http://yoursite.com/2016/04/14/jvm-classloader/index.html">
+<meta property="og:site_name" content="杨灿's Blog">
+<meta property="og:description" content="类加载器
+根类加载器(Bootstrap)它用来加载 Java 的核心库。使用c++编写，程序员无法在Java代码中获得该类 获取类的加载器，如果这个类是由Bootstrap来加载的，那个getClassLoader返回的就是null12Class clazz=Class.forName(&quot;java.lang.String&quot;);System.out.println(clazz.getClassLo">
+<meta property="og:updated_time" content="2016-04-14T10:16:18.976Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="jvm类加载器">
+<meta name="twitter:description" content="类加载器
+根类加载器(Bootstrap)它用来加载 Java 的核心库。使用c++编写，程序员无法在Java代码中获得该类 获取类的加载器，如果这个类是由Bootstrap来加载的，那个getClassLoader返回的就是null12Class clazz=Class.forName(&quot;java.lang.String&quot;);System.out.println(clazz.getClassLo">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨灿&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="杨灿&#39;s Blog" title="杨灿&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="杨灿&#39;s Blog">杨灿&#39;s Blog</a></h1>
+				<h2 class="blog-motto">一直找不到对象(spring)</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/GitHub">GitHub</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/04/14/jvm-classloader/" title="jvm类加载器" itemprop="url">jvm类加载器</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="杨灿" target="_blank" itemprop="author">杨灿</a>
+		
+  <p class="article-time">
+    <time datetime="2016-04-14T09:55:39.000Z" itemprop="datePublished"> 发表于 2016-04-14</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<p></p><h1>类加载器</h1><p></p>
+<p></p><h3>根类加载器(Bootstrap)</h3><br>它用来加载 Java 的核心库。使用c++编写，程序员无法在Java代码中获得该类 获取类的加载器，如果这个类是由Bootstrap来加载的，那个getClassLoader返回的就是null<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Class clazz=Class.forName(<span class="string">"java.lang.String"</span>);</span><br><span class="line">System.out.println(clazz.getClassLoader()); //null</span><br></pre></td></tr></table></figure><p></p>
+<p></p><h3>扩展类加载器(Extensin)</h3><br>它用来加载 Java 的扩展库<p></p>
+<p></p><h3>系统类加载器(System)</h3><br>它根据 Java 应用的类路径（classpath）来加载 Java<p></p>
+<p></p><h3>用户自定义的类加载器</h3><br>java.lang.ClassLoader的子类,用户可以定制类的加载方式。<br><code>类加载器并不需要等到某一个类被“首次主动使用”时再加载它。</code><br>调用ClassLoader类的loadClass方法加载一个类，并不是对一个类的主动使用。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">public class Test &#123;</span><br><span class="line">	static&#123;</span><br><span class="line">		System.out.println(<span class="string">"abc"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line">public class Main &#123;</span><br><span class="line"></span><br><span class="line">	public static void main(String[] args) throws Exception&#123;</span><br><span class="line">		ClassLoader loader=ClassLoader.getSystemClassLoader();</span><br><span class="line">		</span><br><span class="line">		loader.loadClass(<span class="string">"com.kongzhong.gw2.account.service.Test"</span>);//并不会打印出<span class="string">"abc"</span></span><br><span class="line">		</span><br><span class="line">		System.out.println(<span class="string">"----------"</span>);</span><br><span class="line">		</span><br><span class="line">		Class.forName(<span class="string">"com.kongzhong.gw2.account.service.Test"</span>);//反射会导致主动使用，会打印出<span class="string">"abc"</span></span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p>
+<p></p><h1>父类委托加载机制</h1><br>当Java程序请求加载器loader1加载某一个类的时候，loader1首先委托自己的父加载器去加载这个类，若父加载器能加载，则由父加载器完成加载任务。否则才由加载器loader1本身加载这个类。这样做是为了安全考虑，防止有人冒充Java核心类库。<br>例如：用户自定义了一个类，类的全名为java.lang.String<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">package java.lang;</span><br><span class="line"></span><br><span class="line">public class String &#123;</span><br><span class="line"></span><br><span class="line">	public void <span class="function"><span class="title">sayHello</span></span>()&#123;</span><br><span class="line">		System.out.println(<span class="string">"aaa"</span>);</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">public static void main(String[] args) &#123;</span><br><span class="line">	String string=new String();</span><br><span class="line">	string.sayHello();</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p>
+<p>结果：运行时的结果为：Exception in thread “main” java.lang.NoSuchMethodError: java.lang.String.sayHello()V<br>总结：<code>说明类加载是安装父类委托机制。运行的永远是java类库中String</code></p>
+<p></p><h3>定义类加载器与初始化类加载器</h3><br>如果某一个类加载器能够加载一个类，那么该类加载器就被叫做定义类加载器，定义类加载器及其所有子加载器都被叫做：初始类加载器。<br>当生成一个自定义类加载器实例时，如果没有指定它的父加载器，那么系统类加载器就将成为该类加载器的父加载器。<p></p>
+<p></p><h3>命名空间</h3><br>每一个类加载器都有自己的命名空间，命名空间由该加载器及其所有父加载器的类组成。在同一个命名空间中，不会出现类的完整名字（包括类的包名）相同的两个类<br>在不同的命名空间中，有可能会出现类的完整名字(包括类的包名)相同的两个类。<p></p>
+<p></p><h3>运行时包</h3><br>由同一个类加载器加载的属于相同包的类组成了运行时包。决定两个类是不是属于同一个运行时包，不仅要看它们的包名是否相同，还要看定义类加载器是否相同。只有属于<br>同一个运行时包的类才能互相访问(即默认访问级别)类和类成员。这样的限制能避免用户自定义的类冒充核心类库的类。去访问核心类库的包可见成员。<br>假设用户自己定义了一个类java.lang.Spy,并由用户自定义的类加载器加载，由于java.lang.Spy和核心类库java.lang.*由不同的加载器加载，它们属于不同的运行时包。<br>所以java.lang.Spy不能访问核心类库java.lang包中的包可见成员。<p></p>
+<p></p><h1>创建用户自定义的类加载器</h1><br>要创建用户自己的类加载器，只需要扩展java.lang.ClassLoader类，然后覆盖它的findClass(String name)方法即可，该方法根据参数指定的类的名字返回对应的Class对象的引用。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br><span class="line">111</span><br></pre></td><td class="code"><pre><span class="line">import java.io.ByteArrayOutputStream;</span><br><span class="line">import java.io.File;</span><br><span class="line">import java.io.FileInputStream;</span><br><span class="line">import java.io.InputStream;</span><br><span class="line"></span><br><span class="line">public class MyClassLoader extends ClassLoader&#123;</span><br><span class="line">	</span><br><span class="line">	private String name;//类加载器的名字</span><br><span class="line">	</span><br><span class="line">	private String path=<span class="string">"d:\\"</span>;//加载类的路径</span><br><span class="line">	</span><br><span class="line">	private static final String FILE_TYPE=<span class="string">".class"</span>;//class文件的扩展名</span><br><span class="line"></span><br><span class="line">	public MyClassLoader(String name)&#123;</span><br><span class="line">		super();</span><br><span class="line">		this.name=name;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public MyClassLoader(ClassLoader parent,String name)&#123;</span><br><span class="line">		super(parent);</span><br><span class="line">		this.name=name;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	protected Class&lt;?&gt; findClass(String name) throws ClassNotFoundException &#123;</span><br><span class="line">		byte[] data=this.loadClassData(name);</span><br><span class="line">		<span class="built_in">return</span> this.defineClass(name, data, 0, data.length);</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	/**</span><br><span class="line">	 * 把.class字节码转变成字节数组</span><br><span class="line">	 * @param name</span><br><span class="line">	 * @<span class="built_in">return</span></span><br><span class="line">	 */</span><br><span class="line">	private byte[] loadClassData(String name)&#123;</span><br><span class="line">		InputStream is=null;</span><br><span class="line">		byte[] data=null;</span><br><span class="line">		ByteArrayOutputStream baos=null;</span><br><span class="line">		try &#123;</span><br><span class="line">			</span><br><span class="line">			name=name.replace(<span class="string">"."</span>,<span class="string">"\\"</span>);</span><br><span class="line">			is=new FileInputStream(new File(path+name+FILE_TYPE));</span><br><span class="line">			baos=new ByteArrayOutputStream();</span><br><span class="line">			int ch=0;</span><br><span class="line">			<span class="keyword">while</span>((ch=is.read())!=-1)&#123;</span><br><span class="line">				baos.write(ch);</span><br><span class="line">			&#125;</span><br><span class="line">			data=baos.toByteArray();</span><br><span class="line">			</span><br><span class="line">		&#125; catch (Exception e) &#123;</span><br><span class="line">			e.printStackTrace();</span><br><span class="line">		&#125;finally &#123;</span><br><span class="line">			try&#123;</span><br><span class="line">				is.close();</span><br><span class="line">				baos.close();</span><br><span class="line">			&#125;catch(Exception e)&#123;</span><br><span class="line">				e.printStackTrace();</span><br><span class="line">			&#125;</span><br><span class="line">		&#125;</span><br><span class="line">		<span class="built_in">return</span> data;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	@Override</span><br><span class="line">	public String <span class="function"><span class="title">toString</span></span>() &#123;</span><br><span class="line">		<span class="built_in">return</span> this.name;</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	</span><br><span class="line">	public static void main(String[] args) throws Exception&#123;</span><br><span class="line">		MyClassLoader loader1=new MyClassLoader(<span class="string">"loader1"</span>);//loader1的父加载器是系统类加载器</span><br><span class="line">		</span><br><span class="line">		loader1.setPath(<span class="string">"c:\\myapp\\serverlib\\"</span>);//从c:\\myapp\\serverlib\\加载类</span><br><span class="line">		</span><br><span class="line">		MyClassLoader loader2=new MyClassLoader(loader1,<span class="string">"loader2"</span>);//loader2的父加载器是loader1</span><br><span class="line">		</span><br><span class="line">		loader2.setPath(<span class="string">"c:\\myapp\\clientlib\\"</span>);//从c:\\myapp\\clientlib\\加载类</span><br><span class="line">		</span><br><span class="line">		MyClassLoader loader3=new MyClassLoader(null,<span class="string">"loader3"</span>);//loader3的父加载器是根类加载器</span><br><span class="line">		</span><br><span class="line">		loader3.setPath(<span class="string">"c:\\myapp\\otherlib\\"</span>);//c:\\myapp\\otherlib\\加载类</span><br><span class="line">		</span><br><span class="line">		<span class="built_in">test</span>(loader1);//如果Student.class在c:\\myapp\\serverlib\\下则打印出loader1。</span><br><span class="line">		<span class="built_in">test</span>(loader2);//如果Student.class在c:\\myapp\\serverlib\\下，而c:\\myapp\\clientlib\\没有的话。那么则打印出loader1,如果两个都有Student.class那么打印出loader1</span><br><span class="line">		<span class="built_in">test</span>(loader3);//打印出loader3,因为根类加载器不会加载Student.class。只有loader3加载。</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public static void <span class="built_in">test</span>(ClassLoader loader) throws Exception&#123;</span><br><span class="line">		Class clazz=loader.loadClass(<span class="string">"Student"</span>);//加载Student这个类</span><br><span class="line">		Object object=clazz.newInstance();</span><br><span class="line">	&#125;</span><br><span class="line">	</span><br><span class="line">	public String <span class="function"><span class="title">getName</span></span>() &#123;</span><br><span class="line">		<span class="built_in">return</span> name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void <span class="built_in">set</span>Name(String name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public String <span class="function"><span class="title">getPath</span></span>() &#123;</span><br><span class="line">		<span class="built_in">return</span> path;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void <span class="built_in">set</span>Path(String path) &#123;</span><br><span class="line">		this.path = path;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public static String <span class="function"><span class="title">getFileType</span></span>() &#123;</span><br><span class="line">		<span class="built_in">return</span> FILE_TYPE;</span><br><span class="line">	&#125;	</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure><p></p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br></pre></td><td class="code"><pre><span class="line">public class Student &#123;</span><br><span class="line">	</span><br><span class="line">	private String name;</span><br><span class="line">	</span><br><span class="line">	public <span class="function"><span class="title">Student</span></span>()&#123;</span><br><span class="line">		System.out.println(this.getClass().getClassLoader());</span><br><span class="line">		System.out.println(this.getClass().getClassLoader().getParent());</span><br><span class="line">	&#125;</span><br><span class="line">	public Student(String name)&#123;</span><br><span class="line">		this.name=name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public String <span class="function"><span class="title">getName</span></span>() &#123;</span><br><span class="line">		<span class="built_in">return</span> name;</span><br><span class="line">	&#125;</span><br><span class="line"></span><br><span class="line">	public void <span class="built_in">set</span>Name(String name) &#123;</span><br><span class="line">		this.name = name;</span><br><span class="line">	&#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/java/">java</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/04/14/jvm-classloader/" data-title="jvm类加载器 | 杨灿&#39;s Blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/04/13/java-jvm-neic/"  title="jvm内存模型与内存分配">
+ <strong>下一篇：</strong><br/> 
+ <span>jvm内存模型与内存分配
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>6</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/webservice/" title="webservice">webservice<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://xxgblog.com/" target="_blank" title="吴操&#39;s Blog">吴操&#39;s Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Yang Can in China. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="杨灿">杨灿</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
