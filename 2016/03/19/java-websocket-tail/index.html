@@ -18,7 +18,7 @@
 <meta property="og:site_name" content="杨灿's Blog">
 <meta property="og:description" content="在Linux操作系统中，经常需要查看日志文件的实时输出内容，通常会使用tail -f或者tailf命令。查看实时日志可能会需要首先SSH连上Linux主机，步骤很麻烦不说，如果是生产环境的服务器，可能还会控制各种权限。此时可以考虑基于Web显示实时日志。由于传统的HTTP协议是请求/响应模式，而实时日志需要不定时的持续的输出，有新的日志内容时需要由服务器主动推送给客户端浏览器。所以这里使用的是HT">
 <meta property="og:image" content="http://7xidft.com1.z0.glb.clouddn.com/blog/20151125195638286.jpg">
-<meta property="og:updated_time" content="2016-03-20T05:44:59.375Z">
+<meta property="og:updated_time" content="2016-03-20T05:45:00.000Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:title" content="Java WebSocket + tail命令实现Web实时日志">
 <meta name="twitter:description" content="在Linux操作系统中，经常需要查看日志文件的实时输出内容，通常会使用tail -f或者tailf命令。查看实时日志可能会需要首先SSH连上Linux主机，步骤很麻烦不说，如果是生产环境的服务器，可能还会控制各种权限。此时可以考虑基于Web显示实时日志。由于传统的HTTP协议是请求/响应模式，而实时日志需要不定时的持续的输出，有新的日志内容时需要由服务器主动推送给客户端浏览器。所以这里使用的是HT">
@@ -133,21 +133,13 @@
 <nav class="article-nav clearfix">
  
  <div class="prev" >
- <a href="/2016/03/20/maven-wagon-maven-plugin/" title="Maven插件wagon-maven-plugin自动化部署Java项目到Linux远程服务器">
+ <a href="/2016/03/20/web-service-client/" title="Java开发Web Service客户端技巧：wsimport、jaxws-maven-plugin、整合Spring">
   <strong>上一篇：</strong><br/>
   <span>
-  Maven插件wagon-maven-plugin自动化部署Java项目到Linux远程服务器</span>
+  Java开发Web Service客户端技巧：wsimport、jaxws-maven-plugin、整合Spring</span>
 </a>
 </div>
 
-
-<div class="next">
-<a href="/2016/03/18/hello-world/"  title="Hello World">
- <strong>下一篇：</strong><br/> 
- <span>Hello World
-</span>
-</a>
-</div>
 
 </nav>
 
@@ -171,7 +163,7 @@
 		<ul class="clearfix">
 		
 			
-				<li><a href="/tags/java/" title="java">java<sup>6</sup></a></li>
+				<li><a href="/tags/java/" title="java">java<sup>7</sup></a></li>
 			
 		
 			
@@ -183,11 +175,11 @@
 			
 		
 			
-				<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>1</sup></a></li>
 			
 		
 			
-				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>1</sup></a></li>
+				<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
 			
 		
 			
