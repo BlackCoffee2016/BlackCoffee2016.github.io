@@ -1,0 +1,491 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>sdkapi 接口架构设计 | 杨灿&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="杨灿">
+    
+
+    
+    <meta name="description" content="背景:  最近和公司的同事一起做了一个项目，主要是把公司里的一些东西做成接口，供第三方手机APP来调用。这个接口要做成通用的。任何第三方都可以来调用。而且要保证第三方有权限来调用这些接口、能调用这些接口中的哪些接口以及用户身份认证。最后讨论决定用RESTful API。目前在三种主流的web服务实现方案中，REST模式服务相比复杂的SOAP和XML-RPC对比来讲，更加简洁，越来越多的WEB服务开">
+<meta property="og:type" content="article">
+<meta property="og:title" content="sdkapi 接口架构设计">
+<meta property="og:url" content="http://yoursite.com/2016/08/20/sdkapi/index.html">
+<meta property="og:site_name" content="杨灿's Blog">
+<meta property="og:description" content="背景:  最近和公司的同事一起做了一个项目，主要是把公司里的一些东西做成接口，供第三方手机APP来调用。这个接口要做成通用的。任何第三方都可以来调用。而且要保证第三方有权限来调用这些接口、能调用这些接口中的哪些接口以及用户身份认证。最后讨论决定用RESTful API。目前在三种主流的web服务实现方案中，REST模式服务相比复杂的SOAP和XML-RPC对比来讲，更加简洁，越来越多的WEB服务开">
+<meta property="og:updated_time" content="2016-08-20T03:07:33.304Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="sdkapi 接口架构设计">
+<meta name="twitter:description" content="背景:  最近和公司的同事一起做了一个项目，主要是把公司里的一些东西做成接口，供第三方手机APP来调用。这个接口要做成通用的。任何第三方都可以来调用。而且要保证第三方有权限来调用这些接口、能调用这些接口中的哪些接口以及用户身份认证。最后讨论决定用RESTful API。目前在三种主流的web服务实现方案中，REST模式服务相比复杂的SOAP和XML-RPC对比来讲，更加简洁，越来越多的WEB服务开">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨灿&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="杨灿&#39;s Blog" title="杨灿&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="杨灿&#39;s Blog">杨灿&#39;s Blog</a></h1>
+				<h2 class="blog-motto">一直找不到对象(spring)</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/GitHub">GitHub</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/08/20/sdkapi/" title="sdkapi 接口架构设计" itemprop="url">sdkapi 接口架构设计</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="杨灿" target="_blank" itemprop="author">杨灿</a>
+		
+  <p class="article-time">
+    <time datetime="2016-08-20T01:08:50.000Z" itemprop="datePublished"> 发表于 2016-08-20</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<p></p><h1>背景:</h1><br>  最近和公司的同事一起做了一个项目，主要是把公司里的一些东西做成接口，供第三方手机APP来调用。这个接口要做成通用的。任何第三方都可以<br>来调用。而且要保证第三方有权限来调用这些接口、能调用这些接口中的哪些接口以及用户身份认证。最后讨论决定用RESTful API。目前在三种<br>主流的web服务实现方案中，REST模式服务相比复杂的SOAP和XML-RPC对比来讲，更加简洁，越来越多的WEB服务开始使用REST设计并实现。但其缺少<br>安全特性。为了解决这个缺少安全特性，请看下面。<p></p>
+<p></p><h1>REST API简介</h1><br>  REST是无状态传输，无需session，所以每次请求都得带上身份认证信息。REST是基于http协议。它的安全特性需要我们自己来实现。RESTful web<br>services概念的核心就是”资源”。资源可以用URI来表示。客户端使用HTTP协议订阅的方法来发送请求到这些URIS<p></p>
+<p>HTTP方法          行为                         实例</p>
+<p>GET            获取资源的信息             <a href="http://xx.com/api/orders" target="_blank" rel="external">http://xx.com/api/orders</a></p>
+<p>GET        获取某个特定资源的信息         <a href="http://xx.com/api/orders/123" target="_blank" rel="external">http://xx.com/api/orders/123</a></p>
+<p>POST          创建新资源                  <a href="http://xx.com/api/orders" target="_blank" rel="external">http://xx.com/api/orders</a></p>
+<p>PUT           更新资源                    <a href="http://xx.com/api/orders/123" target="_blank" rel="external">http://xx.com/api/orders/123</a></p>
+<p>DELETE        删除资源                    <a href="http://xx.com/api/orders/123" target="_blank" rel="external">http://xx.com/api/orders/123</a></p>
+<p>对于请求的数据一般用json。</p>
+<p></p><h1>身份认证</h1><br>  身份认证包含很多种，有HTTP Basic,APIkey Oauth等，下面简单介绍一下：<p></p>
+<p>  </p><h3>HTTP Basic</h3><br>  REST由于是无状态传输，所以每一次请求都得带上身份认证信息，第一种身份认证就是http basic。这种方式在客户端要求简单。在服务端实现<br>  也很简单，只需要配置apache等web服务器即可实现，所以对于简单的服务来说还是挺方便的。但是这种方式安全性较低，就是简单的将用户名和<br>  密码base64编码放到header中。<code>base64编码前: Basic admin:admin base64编码后: Basic YWRtaW46YWRtaW4=  放到Header中：<br>  Authorization: Basic YWRtaW46YWRtaW4=</code> 正是因为是简单的base64编码存储，切记在这种方式下一定要使用SSL，不然就裸奔了。<br>  <h3>API KEY</h3><br>    API Key就是经过用户身份认证之后服务端给客户端分配一个API Key。流程如下：<br>    client端向服务端注册，服务端给客户端发送响应的api_key以及security_key，这个是一一对应的。注意保存不要泄露，然后客户端根据<br>    api_key,security_key,timestrap,rest_url(请求路径)采用hmacsha256算法得到一个hash值sign,构造URL发送到服务端。服务端收到该请求<br>    后，首先验证api_key是否存在，存在则获取该api_key对应的security_key。接着验证timestrap是否超过时间限制，可依据系统而定。这样<br>    就防止部分重放攻击，获取rest_url来计算sign。之后和url中的sign值做校验。这样的设计就防止了数据被篡改。<br>    client:<br>    api_key,security_key,timestrap,rest_url  ——-&gt;sign<p></p>
+<pre><code>/rest/v1/interface/eth0/?api_key=jdfkla132&amp;timestrap=14232423423423&amp;sign=13sdfsdfsdsd
+server:
+/rest/v1/interface/eth0/?api_key=jdfkla132&amp;timestrap=14232423423423&amp;sign=13sdfsdfsdsd -----&gt;api_key,timestrap,rest_url,sign
+
+api_key---&gt;security_key
+api_key,security_key,timestrap,rest_url  -------&gt;sign
+sign &lt;---&gt; sign
+</code></pre><p>  </p><h3>Oauth2</h3><br>   腾讯QQ第三方登录。<p></p>
+<p></p><h1>我们现在所实现是:</h1><br>  <h4>APP认证，接口认证。身份认证。使用过滤器Filter来实现。</h4><br>  SDK-API系统为对接App分配appId和appSecret<br>  下面参数，每次访问的时候必须放在HTTP Header部分。<br>  <h4>X-Security:APP认证，所有的api请求均要带上次参数。<br>      X-Security=(appId + “:” + currentTimestampInMillis +”:” + checkSum)  checkSum = HexString(MD5Hash(appId + “:”+<br>      currentTimestampInMillis + “:” +appSecret))。<br>      X-Security例子：iHGWFNWR23:1412342342342:5454c3345sdf323sdfsf3<br>      服务器端获取到X-Security之后，先判断是否为null,然后通过appid来获取appSecret来判断appId是否有效。然后根据currentTimestampInMillis<br>      来判断时间是否过期。然后判断传过来的checkSum和自己算出来的是否一致。如果一致就APP接口认证通过。<br>      appId做接口认证。即有没有权限访问其中某一个接口。在服务端把每一个appId对应接口访问路径记录下来。<br>  </h4><br>  <h4>X-User-ID:用户登录之后imifun分配的用户ID,非合作方ID。登录需要单独写个接口。</h4><br>  <h4>X-Token:登录成功之后分配的Access token。和X-User-ID配对使用。如果HTTP返回407错误，客户端必须对用户重新验证登录，重新分配Access token</h4><br>  <h4>X-UUID:为每一次API请求生成的唯一标识，用以跟踪数据。</h4><p></p>
+<p></p><h1>解析：</h1><br>  当请求到达服务端的时候，APP认证和接口认证通过之后，就开始身份认证了。首先从请求中获取X-User-ID和X-Token。然后需要校验登录的<br>  URL进行登录校验。注意：有一些接口是不需要校验登录的。比如：主播列表，排行榜等信息。因为X-User-ID和X-Token是我们分配给第三方的<br>  所以我们自己就清楚该怎么校验了。<p></p>
+<p></p><h1>SDK API实现详解</h1><br>  我们使用swagger文档来生成spring boot框架的java代码。<br>  swagger地址：editor.swagger.io/#/<br>  api文档内容如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br><span class="line">108</span><br><span class="line">109</span><br><span class="line">110</span><br></pre></td><td class="code"><pre><span class="line"></span><br><span class="line">11:02:22</span><br><span class="line">ccc 2016/8/20 11:02:22</span><br><span class="line">swagger: <span class="string">"2.0"</span></span><br><span class="line"></span><br><span class="line">info:</span><br><span class="line">  title: 艾米直播 RESTful APIs</span><br><span class="line">  description: |</span><br><span class="line"></span><br><span class="line">    ** imifun SDK-API 系统首先为对接App分配`appId` 和`appSecret` **</span><br><span class="line"></span><br><span class="line">    *** 下面参数，每次访问时候必须在`HTTP Header`部分 ***</span><br><span class="line"></span><br><span class="line">    * `X-Security`: App接口认证, 所有的api 请求均需要带有此参数。</span><br><span class="line"></span><br><span class="line">        X-Security=(appId + <span class="string">":"</span> + currentTimestampInMillis + <span class="string">":"</span> + checkSum); checkSum=HexString(MD5Hash(appId + <span class="string">":"</span> + currentTimestampInMillis + <span class="string">":"</span> + secret)).</span><br><span class="line"></span><br><span class="line">        X-Security例子: iHGWFNWR23:1445823337551:6355c774a13223sdfse518510ee63b9</span><br><span class="line"></span><br><span class="line">    * `X-User-ID`: 用户登录之后imifun分配的用户ID，非合作方ID</span><br><span class="line"></span><br><span class="line">    * `X-Token`: 用户成功登录之后分配的 Access token ,和 `X-User-ID` 配对使用。如果HTTP返回`407`错误，客户端必须对用户重新验证登录。SDK-API将为用户重新分配Access token。</span><br><span class="line"></span><br><span class="line">    * `X-UUID`: 为每次API请求生成的唯一标志，用以跟踪数据。</span><br><span class="line"></span><br><span class="line">  version: <span class="string">"1.0.0"</span></span><br><span class="line">  contact:</span><br><span class="line">    name: xxg</span><br><span class="line">    email: taixiang.shi@mobimtech.com</span><br><span class="line"></span><br><span class="line">host: localhost:8080</span><br><span class="line">basePath: 1</span><br><span class="line">schemes:</span><br><span class="line">  - http</span><br><span class="line"></span><br><span class="line">securityDefinitions:</span><br><span class="line">  X-Security:</span><br><span class="line">    <span class="built_in">type</span>: apiKey</span><br><span class="line">    name: X-Security</span><br><span class="line">    <span class="keyword">in</span>: header</span><br><span class="line">  X-User-ID:</span><br><span class="line">    <span class="built_in">type</span>: apiKey</span><br><span class="line">    name: X-User-ID</span><br><span class="line">    <span class="keyword">in</span>: header</span><br><span class="line">  X-Token:</span><br><span class="line">    <span class="built_in">type</span>: apiKey</span><br><span class="line">    name: X-Token</span><br><span class="line">    <span class="keyword">in</span>: header</span><br><span class="line">  X-UUID:</span><br><span class="line">    <span class="built_in">type</span>: apiKey</span><br><span class="line">    name: X-UUID</span><br><span class="line">    <span class="keyword">in</span>: header</span><br><span class="line">paths:</span><br><span class="line">  /user/third:</span><br><span class="line">    post:</span><br><span class="line">      tags:</span><br><span class="line">        - user</span><br><span class="line">      summary: 第三方账号登录</span><br><span class="line">      description: 根据合作方appId创建imifun账号</span><br><span class="line">      operationId: createUserWithThirdApp</span><br><span class="line">      produces:</span><br><span class="line">        - application/json</span><br><span class="line">      parameters:</span><br><span class="line">        - <span class="keyword">in</span>: body</span><br><span class="line">          name: body</span><br><span class="line">          description: Created user object</span><br><span class="line">          required: <span class="literal">false</span></span><br><span class="line">          schema:</span><br><span class="line">            <span class="variable">$ref</span>: <span class="string">"#/definitions/ThirdToken"</span></span><br><span class="line">      responses:</span><br><span class="line">        <span class="string">"404"</span>:</span><br><span class="line">          description: 无效的token</span><br><span class="line">        <span class="string">"200"</span>:</span><br><span class="line">          description: ThirdToken 校验成功，imifun为第三方账号分配对应的</span><br><span class="line">          schema:</span><br><span class="line">            <span class="variable">$ref</span>: <span class="string">"#/definitions/LoginResp"</span></span><br><span class="line">        default:</span><br><span class="line">          description: 业务异常</span><br><span class="line">          schema:</span><br><span class="line">            <span class="variable">$ref</span>: <span class="string">'#/definitions/Response'</span></span><br><span class="line">      security:</span><br><span class="line">        - X-Security: []</span><br><span class="line">        - X-UUID: []</span><br><span class="line">definitions:</span><br><span class="line">  ThirdToken:</span><br><span class="line">    <span class="built_in">type</span>: object</span><br><span class="line">    properties:</span><br><span class="line">      thirdUid:</span><br><span class="line">        <span class="built_in">type</span>: string</span><br><span class="line">      token:</span><br><span class="line">        <span class="built_in">type</span>: string</span><br><span class="line">  LoginResp:</span><br><span class="line">    <span class="built_in">type</span>: object</span><br><span class="line">    properties:</span><br><span class="line">      userId:</span><br><span class="line">        <span class="built_in">type</span>: string</span><br><span class="line">      xToken:</span><br><span class="line">        <span class="built_in">type</span>: string        </span><br><span class="line">  Response:</span><br><span class="line">    <span class="built_in">type</span>: object</span><br><span class="line">    required:</span><br><span class="line">      - code</span><br><span class="line">      - message</span><br><span class="line">    properties:</span><br><span class="line">      code:</span><br><span class="line">        <span class="built_in">type</span>: <span class="built_in">integer</span></span><br><span class="line">        format: int32</span><br><span class="line">        description: 10000：成功；权限or安全：20001+；应用：301xx</span><br><span class="line">      message:</span><br><span class="line">        <span class="built_in">type</span>: string</span><br></pre></td></tr></table></figure><p></p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/sdkapi/">sdkapi</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/08/20/sdkapi/" data-title="sdkapi 接口架构设计 | 杨灿&#39;s Blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/05/26/redis-mq/"  title="Redis高级应用之发布/订阅">
+ <strong>下一篇：</strong><br/> 
+ <span>Redis高级应用之发布/订阅
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sdkapi/" title="sdkapi">sdkapi<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/webservice/" title="webservice">webservice<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Redis/" title="Redis">Redis<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Reis/" title="Reis">Reis<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://xxgblog.com/" target="_blank" title="吴操&#39;s Blog">吴操&#39;s Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Yang Can in China. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="杨灿">杨灿</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
