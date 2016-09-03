@@ -1,0 +1,498 @@
+
+ <!DOCTYPE HTML>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  
+    <title>redis高级应用(主从、事务与锁、持久化) | 杨灿&#39;s Blog</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1,user-scalable=no">
+    
+    <meta name="author" content="杨灿">
+    
+
+    
+    <meta name="description" content="安全性设置
+设置客户端操作密码redis安装好后，默认情况下登录客户端和使用命令操作时不需要密码的。某些情况下，为了安全起见，我们可以设置在客户端连接后进行任何操作之前都要进行密码验证。修改redis.conf进行配置。找到# requirepass foobared这一行，在下面添加”requirepass密码”一行设置密码。12345678910111213141516171819######">
+<meta property="og:type" content="article">
+<meta property="og:title" content="redis高级应用(主从、事务与锁、持久化)">
+<meta property="og:url" content="http://yoursite.com/2016/09/03/redis-gj/index.html">
+<meta property="og:site_name" content="杨灿's Blog">
+<meta property="og:description" content="安全性设置
+设置客户端操作密码redis安装好后，默认情况下登录客户端和使用命令操作时不需要密码的。某些情况下，为了安全起见，我们可以设置在客户端连接后进行任何操作之前都要进行密码验证。修改redis.conf进行配置。找到# requirepass foobared这一行，在下面添加”requirepass密码”一行设置密码。12345678910111213141516171819######">
+<meta property="og:updated_time" content="2016-09-03T02:20:52.777Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="redis高级应用(主从、事务与锁、持久化)">
+<meta name="twitter:description" content="安全性设置
+设置客户端操作密码redis安装好后，默认情况下登录客户端和使用命令操作时不需要密码的。某些情况下，为了安全起见，我们可以设置在客户端连接后进行任何操作之前都要进行密码验证。修改redis.conf进行配置。找到# requirepass foobared这一行，在下面添加”requirepass密码”一行设置密码。12345678910111213141516171819######">
+
+    
+    <link rel="alternative" href="/atom.xml" title="杨灿&#39;s Blog" type="application/atom+xml">
+    
+    
+    <link rel="icon" href="/img/favicon.ico">
+    
+    
+    <link rel="apple-touch-icon" href="/img/jacman.jpg">
+    <link rel="apple-touch-icon-precomposed" href="/img/jacman.jpg">
+    
+    <link rel="stylesheet" href="/css/style.css">
+</head>
+
+  <body>
+    <header>
+      
+<div>
+		
+			<div id="imglogo">
+				<a href="/"><img src="/img/logo.png" alt="杨灿&#39;s Blog" title="杨灿&#39;s Blog"/></a>
+			</div>
+			
+			<div id="textlogo">
+				<h1 class="site-name"><a href="/" title="杨灿&#39;s Blog">杨灿&#39;s Blog</a></h1>
+				<h2 class="blog-motto">一直找不到对象(spring)</h2>
+			</div>
+			<div class="navbar"><a class="navbutton navmobile" href="#" title="菜单">
+			</a></div>
+			<nav class="animated">
+				<ul>
+					<ul>
+					 
+						<li><a href="/">主页</a></li>
+					
+						<li><a href="/archives">归档</a></li>
+					
+						<li><a href="/GitHub">GitHub</a></li>
+					
+						<li><a href="/about">关于</a></li>
+					
+					<li>
+ 					
+					<form class="search" action="//google.com/search" method="get" accept-charset="utf-8">
+						<label>Search</label>
+						<input type="search" id="search" name="q" autocomplete="off" maxlength="20" placeholder="搜索" />
+						<input type="hidden" name="q" value="site:yoursite.com">
+					</form>
+					
+					</li>
+				</ul>
+			</nav>			
+</div>
+    </header>
+    <div id="container">
+      <div id="main" class="post" itemscope itemprop="blogPost">
+  
+	<article itemprop="articleBody"> 
+		<header class="article-info clearfix">
+  <h1 itemprop="name">
+    
+      <a href="/2016/09/03/redis-gj/" title="redis高级应用(主从、事务与锁、持久化)" itemprop="url">redis高级应用(主从、事务与锁、持久化)</a>
+  </h1>
+  <p class="article-author">By
+       
+		<a href="/about" title="杨灿" target="_blank" itemprop="author">杨灿</a>
+		
+  <p class="article-time">
+    <time datetime="2016-09-03T00:54:25.000Z" itemprop="datePublished"> 发表于 2016-09-03</time>
+    
+  </p>
+</header>
+	<div class="article-content">
+		
+		<p></p><h1>安全性设置</h1><p></p>
+<p></p><h2>设置客户端操作密码</h2><br>redis安装好后，默认情况下登录客户端和使用命令操作时不需要密码的。某些情况下，为了安全起见，我们可以设置在客户端连接后进行任何操作<br>之前都要进行密码验证。修改redis.conf进行配置。找到# requirepass foobared这一行，在下面添加”requirepass密码”一行设置密码。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#######################SECURITY ##############################</span></span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="comment"># Warning: since Redis is pretty fast an outside user can try up to</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># 150k passwords per second against a good box. This means that you should</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># use a very strong password otherwise it will be very easy to break.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># requirepass foobared</span></span><br><span class="line"></span><br><span class="line">requirepass redis129</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment"># Command renaming.</span></span><br></pre></td></tr></table></figure><p></p>
+<p>设置好密码后，有两种方式授权客户端进行操作</p>
+<p></p><h2>客户端授权方式</h2><br>(1)登录时使用-a 参数指定客户端密码，如下:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># /usr/local/redis/bin/redis-cli -h 192.168.2.129 -p 6379 -a redis129</span></span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; keys *</span><br><span class="line"></span><br><span class="line">1) <span class="string">"myzset"</span></span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt;</span><br></pre></td></tr></table></figure><p></p>
+<p>(2)登录客户端后使用auth命令进行授权，如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">[root@localhost ~]<span class="comment"># /usr/local/redis/bin/redis-cli -h 192.168.2.129 -p 6379</span></span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; keys *</span><br><span class="line"></span><br><span class="line">(error) NOAUTH Authentication required.</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; auth redis129</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; keys *</span><br><span class="line"></span><br><span class="line">1) <span class="string">"myzset"</span></span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt;</span><br></pre></td></tr></table></figure></p>
+<p></p><h1>主从复制</h1><br>主从复制，即主服务器与从服务器之间数据备份的问题。即在主服务器上增加一个KEY，在从服务器上可以获取它的值。从服务器只能读，不能写。redis支持简单且易用的主从复制(master-slave replication)功能，该功能可以让从服务器<br>(slave server)成为主服务器的精确复制品。<p></p>
+<p></p><h2>主从复制的特点</h2><br>(1)一个主服务器可以有多个从服务器<br>(2)不仅主服务器可以有从服务器，从服务器也可以有自己的从服务器。<br>(3)redis支持异步复制和部分复制，主从复制过程中不会阻塞主服务器和从服务器。<br>(4)主从复制功能可以提升系统的伸缩性和功能，如让多个从服务器处理只读命令，使用复制功能来让主服务器免于频繁的执行持久化操作。<p></p>
+<p></p><h2>主从服务器过程</h2><br>(1)从服务器将向主服务器发送一个SYNC命令。<br>(2)主服务器接到SYNC命令后开启一个后台子进程并开始执行BGSAVE,并在保存操作执行期间，将所有新执行的写入命令都保存到一个缓冲区里面。<br>(3)当BGSAVE执行完毕后，主服务器将执行保存操作所得的.rdb文件发送给从服务器，从服务器接收这个.rdb文件，并将文件中的数据载入到内存中。<br>(4)主服务器会以redis命令协议的格式，将写命令缓冲区中积累的所有内容都发送给从服务器。<p></p>
+<p></p><h2>配置从服务器</h2><br>redis配置一个从服务器非常简单，只要在从服务器的配置文件redis.conf中增加主服务器的IP地址和端口号就可以。如果主服务器设置了客户端<br>密码，还需要在从服务器中配置主服务器密码。如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">##########################REPLICATION ###############################</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment"># Master-Slave replication. Use slaveof to make a Redis instance a copy of</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># another Redis server. A few things to understand ASAP about Redis replication.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="comment"># slaveof &lt;masterip&gt; &lt;masterport&gt;</span></span><br><span class="line"></span><br><span class="line">slaveof 192.168.2.129 6379</span><br><span class="line"></span><br><span class="line"><span class="comment"># If the master is password protected (using the "requirepass" configuration</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># directive below) it is possible to tell the slave to authenticate before</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># starting the replication synchronization process, otherwise the master will</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># refuse the slave request.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># masterauth &lt;master-password&gt;</span></span><br><span class="line"></span><br><span class="line">masterauth redis129</span><br></pre></td></tr></table></figure><p></p>
+<p></p><h1>事务与锁</h1><br>redis的事务支持相对简单，MULTI、EXEC、DISCARD和WATCH这四个命令是redis事务的基础。<p></p>
+<p></p><h2>事务开启与取消</h2><br>MULTI开启一个事务。当客户端发出了MULTL命令时，客户端和服务端的连接进入了一个事务上下文的状态。MULTI执行之后，客户端可以继续向<br>服务器发送任意多条命令，这些命令不会立即被执行，而是被放到一个队列中，当EXEC命令被调用时，所有队列中的命令才会被执行。<br>EXEC顺序执行事务队列中的命令:<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.129:6379&gt; multi</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; <span class="built_in">set</span> name <span class="string">"zhangsan"</span></span><br><span class="line"></span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; <span class="built_in">set</span> age 20</span><br><span class="line"></span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; <span class="built_in">exec</span></span><br><span class="line"></span><br><span class="line">1) OK</span><br><span class="line"></span><br><span class="line">2) OK</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; keys *</span><br><span class="line"></span><br><span class="line">1) <span class="string">"age"</span></span><br><span class="line"></span><br><span class="line">2) <span class="string">"name"</span></span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt;</span><br></pre></td></tr></table></figure><p></p>
+<p>DISCARD取消事务。当执行DISCARD命令时，事务会被抛弃。事务队列会被清空，并且客户端会从事务状态中退出。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br></pre></td><td class="code"><pre><span class="line">192.168.2.129:6379&gt; multi</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; <span class="built_in">set</span> name2 <span class="string">"lisi"</span></span><br><span class="line"></span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; <span class="built_in">set</span> age 22</span><br><span class="line"></span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; discard</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; <span class="built_in">exec</span></span><br><span class="line"></span><br><span class="line">(error) ERR EXEC without MULTI</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt;</span><br></pre></td></tr></table></figure></p>
+<p></p><h2>乐观锁</h2><br>WATCH对key值进行锁操作。在WATCH执行之后，EXEC执行之前，有其他客户端修改了key的值，那么当前客户端的事务就会失败。如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br></pre></td><td class="code"><pre><span class="line">Client1开启watch name并在事务中修改name，但是没有执行<span class="built_in">exec</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; get name</span><br><span class="line"></span><br><span class="line"><span class="string">"huangliu"</span></span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; watch name</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; multi</span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; <span class="built_in">set</span> name lisi</span><br><span class="line"></span><br><span class="line">QUEUED</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">Client2 修改name</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; get name</span><br><span class="line"></span><br><span class="line"><span class="string">"huangliu"</span></span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; <span class="built_in">set</span> name <span class="string">"wangwu"</span></span><br><span class="line"></span><br><span class="line">OK</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; get name</span><br><span class="line"></span><br><span class="line"><span class="string">"wangwu"</span></span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt;</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">Client1执行<span class="built_in">exec</span></span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt; <span class="built_in">exec</span></span><br><span class="line"></span><br><span class="line">(nil)</span><br><span class="line"></span><br><span class="line">192.168.2.129:6379&gt;</span><br></pre></td></tr></table></figure><p></p>
+<p>可见，由于被watch的name已经被client2修改，所以client1的事务执行失败，程序需要做的就是不断重试这个操作，直到没有发生碰撞为止。<br>对key进行加锁监视的机制类似java多线程中的锁。</p>
+<p></p><h1>持久化机制</h1><br>redis既可以理解为缓存技术，也可以理解为数据库，因为redis支持将内存中的数据周期性的写入磁盘或者把操作追加到记录文件中，这个过程<br>叫做redis持久化。redis支持两种方式的持久化，一种是快照方式，也叫RDB。另外一种是追加文件方式。也叫AOF方式。RDB是redis默认持久化方式。<p></p>
+<p></p><h2>RDB方式</h2><br>RDB方式是讲内存中的数据以二进制的方式写入名字为dump.rdb文件中。我们对redis进行设置，让它根据设置周期性自动保存数据集。修改redis.conf文件，如下：<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">######################### SNAPSHOTTING  ################################</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Save the DB on disk:</span></span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="comment">#   In the example below the behaviour will be to save:</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#   after 900 sec (15 min) if at least 1 key changed</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#   after 300 sec (5 min) if at least 10 keys changed</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#   after 60 sec if at least 10000 keys changed</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#   Note: you can disable saving completely by commenting out all "save" lines.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#   It is also possible to remove all the previously configured save</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#   points by adding a save directive with a single empty string argument</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#   like in the following example:</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#   save ""</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#900秒内如果有超过1个key被修改则发起保存快照</span></span><br><span class="line"></span><br><span class="line">save 900 1</span><br><span class="line"></span><br><span class="line"><span class="comment">#300秒内如果有超过10个key被修改则发起保存快照</span></span><br><span class="line"></span><br><span class="line">save 300 10</span><br><span class="line"></span><br><span class="line"><span class="comment">#60秒内如果有超过1000个key被修改则发起保存快照</span></span><br><span class="line"></span><br><span class="line">save 60 10000</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line">dump.rdb文件默认生成在%REDIS_HOME%etc目录下（如/usr/<span class="built_in">local</span>/redis/etc/），可以修改redis.conf文件中的dir指定dump.rdb的保存路径</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment"># The filename where to dump the DB</span></span><br><span class="line"></span><br><span class="line">dbfilename dump.rdb</span><br><span class="line"></span><br><span class="line"> </span><br><span class="line"></span><br><span class="line"><span class="comment"># The working directory.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The DB will be written inside this directory, with the filename specified</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># above using the 'dbfilename' configuration directive.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># The Append Only File will also be created inside this directory.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Note that you must specify a directory here, not a file name.</span></span><br><span class="line"></span><br><span class="line">dir ./</span><br></pre></td></tr></table></figure><p></p>
+<p></p><h2>AOF方式</h2><br>RDB方式是周期性的持久化数据，如果未到持久化时间点，Redis因为某些原因而造成故障停机，那么服务器将遗失最近写入，且仍未保存到快照<br>中的那些数据。所以redis-1.1开始引入了AOF方式。AOF持久化记录服务器执行的所有写操作命令，并在服务器启动时，通过重新执行这些命令来<br>还原数据集，AOF文件中的命令全部以Redis协议的格式保存，新命令会被追加到文件的末尾。<br><figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br></pre></td><td class="code"><pre><span class="line"><span class="comment">#######################APPEND ONLY MODE #############################</span></span><br><span class="line"></span><br><span class="line">......</span><br><span class="line"></span><br><span class="line"><span class="comment"># AOF and RDB persistence can be enabled at the same time without problems.</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># If the AOF is enabled on startup Redis will load the AOF, that is the file</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># with the better durability guarantees.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#</span></span><br><span class="line"></span><br><span class="line"><span class="comment"># Please check http://redis.io/topics/persistence for more information.</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#启用AOF方式</span></span><br><span class="line"></span><br><span class="line">appendonly yes</span><br><span class="line"></span><br><span class="line"><span class="comment">#每次有新命令追加到 AOF 文件时就执行一次 fsync ：非常慢，也非常安全</span></span><br><span class="line"></span><br><span class="line">appendfsync always</span><br><span class="line"></span><br><span class="line"><span class="comment">#每秒 fsync 一次：足够快（和使用 RDB 持久化差不多），并且在故障时只会丢失 1 秒钟的数据</span></span><br><span class="line"></span><br><span class="line">appendfsync everysec</span><br><span class="line"></span><br><span class="line"><span class="comment">#从不 fsync ：将数据交给操作系统来处理。更快，也更不安全的选择</span></span><br><span class="line"></span><br><span class="line">appendfsync no</span><br></pre></td></tr></table></figure><p></p>
+<p>从上面三种AOF持久化时机来看。为了保证不遗失数据。appendfsync always是最安全的。</p>
+  
+	</div>
+		<footer class="article-footer clearfix">
+<div class="article-catetags">
+
+
+  <div class="article-tags">
+  
+  <span></span> <a href="/tags/redis/">redis</a>
+  </div>
+
+</div>
+
+
+
+	<div class="article-share" id="share">
+	
+	  <div data-url="http://yoursite.com/2016/09/03/redis-gj/" data-title="redis高级应用(主从、事务与锁、持久化) | 杨灿&#39;s Blog" data-tsina="null" class="share clearfix">
+	  </div>
+	
+	</div>
+
+
+</footer>
+
+   	       
+	</article>
+	
+<nav class="article-nav clearfix">
+ 
+
+<div class="next">
+<a href="/2016/08/27/activemq/"  title="activemq中点对点、订阅/发布以及Camel 模式spring整合">
+ <strong>下一篇：</strong><br/> 
+ <span>activemq中点对点、订阅/发布以及Camel 模式spring整合
+</span>
+</a>
+</div>
+
+</nav>
+
+	
+
+</div>  
+      <div class="openaside"><a class="navbutton" href="#" title="显示侧边栏"></a></div>
+
+<div id="asidepart">
+<div class="closeaside"><a class="closebutton" href="#" title="隐藏侧边栏"></a></div>
+<aside class="clearfix">
+
+  
+
+
+  
+
+  
+<div class="tagslist">
+	<p class="asidetitle">标签</p>
+		<ul class="clearfix">
+		
+			
+				<li><a href="/tags/java/" title="java">java<sup>8</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Python/" title="Python">Python<sup>5</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Nginx/" title="Nginx">Nginx<sup>2</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/redis/" title="redis">redis<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Java/" title="Java">Java<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/mybatis/" title="mybatis">mybatis<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/maven/" title="maven">maven<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/sdkapi/" title="sdkapi">sdkapi<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Reis/" title="Reis">Reis<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/webservice/" title="webservice">webservice<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/Redis/" title="Redis">Redis<sup>1</sup></a></li>
+			
+		
+			
+				<li><a href="/tags/activemq/" title="activemq">activemq<sup>1</sup></a></li>
+			
+		
+		</ul>
+</div>
+
+
+  <div class="linkslist">
+  <p class="asidetitle">友情链接</p>
+    <ul>
+        
+          <li>
+            
+            	<a href="http://xxgblog.com/" target="_blank" title="吴操&#39;s Blog">吴操&#39;s Blog</a>
+            
+          </li>
+        
+          <li>
+            
+            	<a href="http://wuchong.me" target="_blank" title="Jark&#39;s Blog">Jark&#39;s Blog</a>
+            
+          </li>
+        
+    </ul>
+</div>
+
+  
+
+
+  <div class="rsspart">
+	<a href="/atom.xml" target="_blank" title="rss">RSS 订阅</a>
+</div>
+
+  <div class="weiboshow">
+  <p class="asidetitle">新浪微博</p>
+    <iframe width="100%" height="119" class="share_self"  frameborder="0" scrolling="no" src="http://widget.weibo.com/weiboshow/index.php?language=&width=0&height=119&fansRow=2&ptype=1&speed=0&skin=9&isTitle=1&noborder=1&isWeibo=0&isFans=0&uid=null&verifier=&dpc=1"></iframe>
+</div>
+
+
+</aside>
+</div>
+    </div>
+    <footer><div id="footer" >
+	
+	<div class="line">
+		<span></span>
+		<div class="author"></div>
+	</div>
+	
+	
+	<section class="info">
+		<p> Hello ,I&#39;m Yang Can in China. <br/>
+			This is my blog,believe it or not.</p>
+	</section>
+	 
+	<div class="social-font" class="clearfix">
+		
+		
+		
+		
+		
+		
+		
+		
+		
+		
+	</div>
+			
+		
+
+		<p class="copyright">
+		Powered by <a href="http://hexo.io" target="_blank" title="hexo">hexo</a> and Theme by <a href="https://github.com/wuchong/jacman" target="_blank" title="Jacman">Jacman</a> © 2016 
+		
+		<a href="/about" target="_blank" title="杨灿">杨灿</a>
+		
+		
+		</p>
+</div>
+</footer>
+    <script src="/js/jquery-2.0.3.min.js"></script>
+<script src="/js/jquery.imagesloaded.min.js"></script>
+<script src="/js/gallery.js"></script>
+<script src="/js/jquery.qrcode-0.12.0.min.js"></script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.navbar').click(function(){
+    $('header nav').toggleClass('shownav');
+  });
+  var myWidth = 0;
+  function getSize(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+  };
+  var m = $('#main'),
+      a = $('#asidepart'),
+      c = $('.closeaside'),
+      o = $('.openaside');
+  c.click(function(){
+    a.addClass('fadeOut').css('display', 'none');
+    o.css('display', 'block').addClass('fadeIn');
+    m.addClass('moveMain');
+  });
+  o.click(function(){
+    o.css('display', 'none').removeClass('beforeFadeIn');
+    a.css('display', 'block').removeClass('fadeOut').addClass('fadeIn');      
+    m.removeClass('moveMain');
+  });
+  $(window).scroll(function(){
+    o.css("top",Math.max(80,260-$(this).scrollTop()));
+  });
+  
+  $(window).resize(function(){
+    getSize(); 
+    if (myWidth >= 1024) {
+      $('header nav').removeClass('shownav');
+    }else{
+      m.removeClass('moveMain');
+      a.css('display', 'block').removeClass('fadeOut');
+      o.css('display', 'none');
+        
+    }
+  });
+});
+</script>
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var ai = $('.article-content>iframe'),
+      ae = $('.article-content>embed'),
+      t  = $('#toc'),
+      ta = $('#toc.toc-aside'),
+      o  = $('.openaside'),
+      c  = $('.closeaside');
+  if(ai.length>0){
+    ai.wrap('<div class="video-container" />');
+  };
+  if(ae.length>0){
+   ae.wrap('<div class="video-container" />');
+  };
+  c.click(function(){
+    ta.css('display', 'block').addClass('fadeIn');
+  });
+  o.click(function(){
+    ta.css('display', 'none');
+  });
+  $(window).scroll(function(){
+    ta.css("top",Math.max(140,320-$(this).scrollTop()));
+  });
+});
+</script>
+
+
+<script type="text/javascript">
+$(document).ready(function(){ 
+  var $this = $('.share'),
+      url = $this.attr('data-url'),
+      encodedUrl = encodeURIComponent(url),
+      title = $this.attr('data-title'),
+      tsina = $this.attr('data-tsina'),
+      description = $this.attr('description');
+  var html = [
+  '<div class="hoverqrcode clearfix"></div>',
+  '<a class="overlay" id="qrcode"></a>',
+  '<a href="https://www.facebook.com/sharer.php?u=' + encodedUrl + '" class="article-share-facebook" target="_blank" title="Facebook"></a>',
+  '<a href="https://twitter.com/intent/tweet?url=' + encodedUrl + '" class="article-share-twitter" target="_blank" title="Twitter"></a>',
+  '<a href="#qrcode" class="article-share-qrcode" title="微信"></a>',
+  '<a href="http://widget.renren.com/dialog/share?resourceUrl=' + encodedUrl + '&srcUrl=' + encodedUrl + '&title=' + title +'" class="article-share-renren" target="_blank" title="人人"></a>',
+  '<a href="http://service.weibo.com/share/share.php?title='+title+'&url='+encodedUrl +'&ralateUid='+ tsina +'&searchPic=true&style=number' +'" class="article-share-weibo" target="_blank" title="微博"></a>',
+  '<span title="Share to"></span>'
+  ].join('');
+  $this.append(html);
+
+  $('.hoverqrcode').hide();
+
+  var myWidth = 0;
+  function updatehoverqrcode(){
+    if( typeof( window.innerWidth ) == 'number' ) {
+      myWidth = window.innerWidth;
+    } else if( document.documentElement && document.documentElement.clientWidth) {
+      myWidth = document.documentElement.clientWidth;
+    };
+    var qrsize = myWidth > 1024 ? 200:100;
+    var options = {render: 'image', size: qrsize, fill: '#2ca6cb', text: url, radius: 0.5, quiet: 1};
+    var p = $('.article-share-qrcode').position();
+    $('.hoverqrcode').empty().css('width', qrsize).css('height', qrsize)
+                          .css('left', p.left-qrsize/2+20).css('top', p.top-qrsize-10)
+                          .qrcode(options);
+  };
+  $(window).resize(function(){
+    $('.hoverqrcode').hide();
+  });
+  $('.article-share-qrcode').click(function(){
+    updatehoverqrcode();
+    $('.hoverqrcode').toggle();
+  });
+  $('.article-share-qrcode').hover(function(){}, function(){
+      $('.hoverqrcode').hide();
+  });
+});   
+</script>
+
+
+
+
+
+
+
+
+
+<link rel="stylesheet" href="/fancybox/jquery.fancybox.css" media="screen" type="text/css">
+<script src="/fancybox/jquery.fancybox.pack.js"></script>
+<script type="text/javascript">
+$(document).ready(function(){ 
+  $('.article-content').each(function(i){
+    $(this).find('img').each(function(){
+      if ($(this).parent().hasClass('fancybox')) return;
+      var alt = this.alt;
+      if (alt) $(this).after('<span class="caption">' + alt + '</span>');
+      $(this).wrap('<a href="' + this.src + '" title="' + alt + '" class="fancybox"></a>');
+    });
+    $(this).find('.fancybox').each(function(){
+      $(this).attr('rel', 'article' + i);
+    });
+  });
+  if($.fancybox){
+    $('.fancybox').fancybox();
+  }
+}); 
+</script>
+
+
+
+<!-- Analytics Begin -->
+
+
+
+<script>
+var _hmt = _hmt || [];
+(function() {
+  var hm = document.createElement("script");
+  hm.src = "//hm.baidu.com/hm.js?e6d1f421bbc9962127a50488f9ed37d1";
+  var s = document.getElementsByTagName("script")[0]; 
+  s.parentNode.insertBefore(hm, s);
+})();
+</script>
+
+
+
+<!-- Analytics End -->
+
+<!-- Totop Begin -->
+
+	<div id="totop">
+	<a title="返回顶部"><img src="/img/scrollup.png"/></a>
+	</div>
+	<script src="/js/totop.js"></script>
+
+<!-- Totop End -->
+
+<!-- MathJax Begin -->
+<!-- mathjax config similar to math.stackexchange -->
+
+
+<!-- MathJax End -->
+
+<!-- Tiny_search Begin -->
+
+<!-- Tiny_search End -->
+
+  </body>
+</html>
